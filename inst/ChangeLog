@@ -1,0 +1,23 @@
+1.0.1: added Vonesh data, lambertW function (from bbmisc)
+1.0.3: added more data (fir and fish survivorship), delta-method
+       functions, get-packages function
+1.0.4: added r/dzinbinom (zero-inflated negative binomial) functions
+       lseq
+       scinot
+       added myxomatosis data
+       added "none" option to curve3d
+       added credible interval functions, as.mcmc.bugs
+
+1.0.5: removed qcredint (HPDinterval[coda] is better)
+       added calcslice, HPDregionplot, *chibarsq functions
+       fixed deltavar
+       tweaks to scinot()       
+       added lump.mcmc.list()
+       changed dataset names,
+         moved lily and goby data sets to emdbookx
+       added require(coda) to as.mcmc.bugs
+       added {d,r}betabinom
+       added SeedPred_mass data (numeric vector of seed masses)
+       added numeric derivatives to deltavar
+       fixed bug in calcslice (not referring to correct function)
+       added Lily data (moved from emdbookx)
