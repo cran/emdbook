@@ -109,10 +109,10 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
            contour=contour(x,y,z,...),
            image=image(x,y,z,...),
            none=NA,
-           wireframe={require(lattice); 
+           wireframe={require("lattice"); 
                       dimnames(z) <- list(x=x,y=y);
                       print(wireframe(z))},
-           rgl={require(rgl); persp3d(x,y,z,zlab=zlab,add=add,...)})
+           rgl={require("rgl"); rgl::persp3d(x,y,z,zlab=zlab,add=add,...)})
   invisible(list(x=x,y=y,z=z))
 }
 
@@ -244,7 +244,7 @@ scinot <- function(x,format=c("latex","expression"),delim="$",
  
 ## convert R2WinBUGS output to coda/mcmc
 as.mcmc.bugs <- function(x) {
-  require(coda)
+  require("coda")
   if (x$n.chains>1) {
     z <- list()
     for (i in 1:x$n.chains) {
@@ -352,7 +352,7 @@ ncredint <- function(pvec,npost,level=0.95,tol=0.01,verbose=FALSE) {
 
 HPDregionplot <- function(x,vars=1:2,h=c(1,1),n=50,lump=TRUE,prob=0.95,
                           xlab=NULL,ylab=NULL,...) {
-  require(MASS) ## for kde2d
+  require("MASS") ## for kde2d
   parnames <- if (class(x)=="mcmc.list") colnames(x[[1]]) else colnames(x)
   if (is.character(vars)) {
     vars <- match(vars,parnames)
@@ -371,7 +371,7 @@ HPDregionplot <- function(x,vars=1:2,h=c(1,1),n=50,lump=TRUE,prob=0.95,
   } else var2 <- x[,vars[2]]
   if (!mult) {
     post1 = kde2d(var1,var2,n=n,h=h)
-    post0 = post1
+    ## post0 = post1
   } else {
     post1 = mapply(kde2d,var1,var2,MoreArgs=list(n=n))
   }
@@ -380,7 +380,7 @@ HPDregionplot <- function(x,vars=1:2,h=c(1,1),n=50,lump=TRUE,prob=0.95,
   sz = sort(post1$z)
   c1 = cumsum(sz)*dx*dy
   levels = sapply(prob,function(x) {approx(c1,sz,xout=1-x)$y})
-  meanvec <- c(mean(var1),mean(var2))
+  ## meanvec <- c(mean(var1),mean(var2))
   if (is.null(xlab)) xlab <- varnames[1]
   if (is.null(ylab)) ylab <- varnames[2]
   contour(post1$x,post1$y,post1$z,level=levels,
