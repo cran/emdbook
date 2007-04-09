@@ -7,7 +7,7 @@
    as a function of day-of-infection and virus grade,
    from Dwyer et al. 1990, ultimately from Fenner et al. 1956
 }
-\usage{data(MyxoTiter_bsum)}
+\usage{data(MyxoTiter_sum)}
 \format{
   \describe{
     \item{\code{grade}}{virus grade (1, least virulent; 5, most virulent)}

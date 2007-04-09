@@ -21,3 +21,7 @@
        added numeric derivatives to deltavar
        fixed bug in calcslice (not referring to correct function)
        added Lily data (moved from emdbookx)
+
+1.0.6: internal tweaks
+       tiny doc fix for Myxo (sum instead of bsum)
+
