@@ -1,4 +1,5 @@
 \name{Fir}
+\alias{Fir}
 \alias{FirDBHFec}
 \alias{FirDBHFec_sum}
 \docType{data}

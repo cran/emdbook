@@ -1,4 +1,5 @@
 \name{Reedfrog}
+\alias{Reedfrog}
 \alias{ReedfrogPred}
 \alias{ReedfrogFuncresp}
 \alias{ReedfrogSizepred}

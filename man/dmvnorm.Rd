@@ -22,7 +22,8 @@ dmvnorm(x, mu, Sigma, log = FALSE, tol = 1e-06)
   vector of log-likelihoods
 }
 \author{Ben Bolker}
-\seealso{\code{\link{mvrnorm}}}
+\seealso{\code{\link[MASS]{mvrnorm}} (in \code{MASS} package),
+  \code{\link[mvtnorm]{dmvnorm}} (in \code{mvtnorm} package)}
 \examples{
 M = matrix(c(1,0.5,0.5,0.5,1,0.5,0.5,0.5,1),nrow=3)
 dmvnorm(1:3,mu=1:3,Sigma=M,log=TRUE)

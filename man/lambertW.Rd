@@ -30,7 +30,8 @@ In ecology, the Lambert W can be used to solve the so-called
 W Function", Advances in Computational Mathematics 5(4):329-359}
 \author{Nici Schraudolph <schraudo@inf.ethz.ch> (original
   version (c) 1998), Ben Bolker (R translation)
-  }
+}
+\seealso{\code{?Lambert} in the \code{gsl} package by Robin Hankin}
 \note{
 This implementation should return values within 2.5*eps of its
 counterpart in Maple V, release 3 or later.  Please report any
@@ -63,5 +64,10 @@ abline(h=5)
 legend(30,2,
    c(paste("Rogers, T=",c(0.2,1,5,10),sep=""),
     "Holling type II"),lwd=c(rep(1,4),2),lty=c(3,1,2,4,1))
+## final size of an epidemic
+finalsize = function(R0) {
+   1+1/R0*lambertW(-R0*exp(-R0))
+}
+curve(finalsize,from=1,to=10,xlab=expression(R[0]),ylab="Final size")
 }
 \keyword{math}

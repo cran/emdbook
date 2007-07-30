@@ -1,4 +1,5 @@
 \name{Lily}
+\alias{Lily}
 \alias{Lily_sum}
 \docType{data}
 \title{Glacier lily occurrence and fecundity data}

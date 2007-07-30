@@ -1,4 +1,5 @@
 \name{Wrasse}
+\alias{Wrasse}
 \alias{WrasseSettlement}
 \alias{WrasseRecruitment}
 \alias{WrasseRecruitment_sum}

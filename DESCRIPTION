@@ -1,13 +1,13 @@
 Package: emdbook
 Type: Package
-Title: ecological models and data (book support)
-Version: 1.0.6
-Date: 2007-02-01
+Title: Ecological models and data (book support)
+Version: 1.0.8.1
+Date: 2007-07-30
 Author: Ben Bolker
 Maintainer: Ben Bolker <bolker@zoo.ufl.edu>
-Description: Data sets and auxiliary functions for \emph{Ecological Models and Data}
-Suggests: R2WinBUGS, rgl, ellipse
-Depends: MASS, coda, lattice
+Description: Auxiliary functions and data sets for _Ecological Models and Data_, a book presenting maximum likelihood estimation and related topics for ecologists (in preparation for Princeton University Press)
+Suggests: R2WinBUGS, rgl, ellipse, coda
+Depends: MASS, lattice
 License: GPL
 URL: http://www.zoo.ufl.edu/bolker/emdbook
-Packaged: Mon Apr  9 14:32:57 2007; ben
+Packaged: Mon Jul 30 10:31:37 2007; ben

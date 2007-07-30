@@ -11,7 +11,7 @@
 1.0.5: removed qcredint (HPDinterval[coda] is better)
        added calcslice, HPDregionplot, *chibarsq functions
        fixed deltavar
-       tweaks to scinot()       
+       tweaks to scinot() 
        added lump.mcmc.list()
        changed dataset names,
          moved lily and goby data sets to emdbookx
@@ -25,3 +25,27 @@
 1.0.6: internal tweaks
        tiny doc fix for Myxo (sum instead of bsum)
 
+1.0.7: tweaked dbetabinom documentation
+       fixed (major) bug in get.emdbook.packages
+       added aliases to data .Rd files
+       added reference to gsl package in lambertW Rd file
+       added gridsearch2d
+       added metropSB (Metropolis-Szymura-Barton)
+
+1.0.8: fixed major bugs in dmvnorm
+       added bbmle to get.emdbook.packages
+       added an extended version of trcoef (transform coefficients)
+       added (preliminary) perturb.params
+       tweaked some keywords/aliases
+       added traditional parameterization for dbetabinom
+       added note about SuppDists to ?dbetabinom
+       removed coda dependency
+
+       put myxo1.bug into BUGS directory
+	
+
+1.0.8.1: ANOTHER big bug in dmvnorm (sigh):
+	spurious factor of n before log determinant
+	  (should consider removing dmvnorm and
+	    just referring users to mvtnorm::dmvnorm)
+	added cross-ref to mvtnorm::dmvnorm in dmvnorm.Rd
