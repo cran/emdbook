@@ -1,4 +1,5 @@
 \name{Myxo}
+\alias{Myxo}
 \alias{MyxoTiter_sum}
 \docType{data}
 \title{Myxomatosis titer data}

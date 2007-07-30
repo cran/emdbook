@@ -23,7 +23,7 @@ pref="", ...)
 \author{Ben Bolker}
 \seealso{\code{\link{formatC}}, \code{\link{expression}},
   \code{\link{plotmath}},
-  \code{latexSN} in \code{Hmisc} package}
+  \code{latexSN} in the \code{Hmisc} package}
 \examples{
 scinot(1e-5)
 scinot(1e-5,digits=0)

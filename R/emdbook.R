@@ -117,29 +117,14 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
 }
 
 get.emdbook.packages <- function() {
-   pkglist = c("adapt","chron","coda","ellipse","gplots","gtools","gdata",
+   pkglist = c("adapt","bbmle","chron","coda","ellipse","gplots","gtools","gdata",
      "MCMCpack","odesolve","plotrix","R2WinBUGS","reshape","rgl",
      "scatterplot3d")
    inst.pkgs = rownames(installed.packages())
    newpkgs <- pkglist[!pkglist %in% inst.pkgs]
    if (length(newpkgs)>0)
-     sapply(pkglist,install.packages())
-   ## rgl: OBSOLETE since version 0.70 on CRAN
-   ##    if (getnewrgl) {
-   ##      prefix <- "http://www.stats.uwo.ca/faculty/murdoch/software/"
-   ##      pkg <- "rgl"
-   ##      ver <- "0.69.543"
-   ##      pkgname <- paste(pkg,"_",ver,sep="")
-   ##      pkgfile <- paste(pkgname,".zip",sep="")
-   ##      download.file(paste(prefix,pkgfile,sep=""),
-   ##                    paste(pkgname,".zip",sep=""),mode="wb")
-   ##      install.packages(pkgfile,contriburl=NULL)
-   ##    }
+     sapply(pkglist,install.packages)
  }
-
-## update.bmb.packages <- function(...) {
-##  update.packages(...,repos="http://www.zoo.ufl.edu/bolker/R")
-##}
 
 
 ## expr: expression to evaluate (raw form)
@@ -244,7 +229,7 @@ scinot <- function(x,format=c("latex","expression"),delim="$",
  
 ## convert R2WinBUGS output to coda/mcmc
 as.mcmc.bugs <- function(x) {
-  require("coda")
+  if (!require("coda")) stop("coda is required to use as.mcmc.bugs")
   if (x$n.chains>1) {
     z <- list()
     for (i in 1:x$n.chains) {
@@ -458,44 +443,226 @@ lump.mcmc.list <- function(x) {
   x2
 }
 
-dmvnorm <- function(x,mu,Sigma,log=FALSE,tol=1e-6) {
-  ## should use QR decomposition?
-  if (is.vector(x)) x=t(as.matrix(x))
-  n = nrow(x)
-  if (is.vector(mu)) {
-    p <- length(mu)
-    if (is.matrix(x)) {
-      mu <- matrix(rep(mu,nrow(x)),ncol=p,byrow=TRUE)
+dmvnorm <- function (x, mu, Sigma, log = FALSE, tol = 1e-06) {
+    if (is.vector(x)) 
+        x = t(as.matrix(x))
+    n = length(mu)
+    if (is.vector(mu)) {
+        p <- length(mu)
+        if (is.matrix(x)) {
+            mu <- matrix(rep(mu, nrow(x)), ncol = p, byrow = TRUE)
+        }
     }
-  } else {
-    p <- ncol(mu)
+    else {
+        p <- ncol(mu)
+    }
+    if (!all(dim(Sigma) == c(p, p)) || nrow(x) != nrow(mu)) 
+        stop("incompatible arguments")
+    eS <- eigen(Sigma, sym = TRUE, EISPACK = TRUE)
+    ev <- eS$values
+    if (!all(ev >= -tol * abs(ev[1]))) 
+        stop("Sigma is not positive definite")
+    z = t(x - mu)
+    logdetS = try(determinant(Sigma, logarithm = TRUE)$modulus)
+    attributes(logdetS) <- NULL
+    iS = try(solve(Sigma))
+    if (class(iS) == "try-error" || class(logdetS) == "try-error") {
+        warning("difficulty inverting/taking determinant of Var-Cov matrix")
+        return(NA)
+    }
+    ssq = diag(t(z) %*% iS %*% z)
+    loglik = -(n * (log(2*pi)) +  logdetS + ssq)/2
+    if (log) loglik else exp(loglik)
   }
-  if (!all(dim(Sigma) == c(p, p)) ||
-      nrow(x) != nrow(mu)) 
-    stop("incompatible arguments")
-  eS <- eigen(Sigma, sym = TRUE, EISPACK = TRUE)
-  ev <- eS$values
-  if (!all(ev >= -tol * abs(ev[1]))) 
-    stop("Sigma is not positive definite")
-  z = t(x-mu)
-  logdetS = try(determinant(Sigma,logarithm=TRUE)$modulus)
-  attributes(logdetS) <- NULL
-  iS = try(solve(Sigma))
-  if (class(iS)=="try-error" || class(logdetS) == "try-error") {
-    warning("difficulty inverting/taking determinant of Var-Cov matrix")
-    return(NA)
-  }
-  loglik = -n*logdetS/2 - diag(t(z) %*% iS %*% z/2)
-  if (log) return(loglik) else return(exp(loglik))
-}
 
-dbetabinom <- function(x,prob,size,theta,log=FALSE) {
+
+dbetabinom <- function(x,prob,size,theta,shape1,shape2,log=FALSE) {
+  if (missing(prob) && !missing(shape1) && !missing(shape2)) {
+    prob = shape1/(shape1+shape2)
+    theta = shape1+shape2
+  }
   v <- lchoose(size,x)-lbeta(theta*(1-prob),theta*prob)+lbeta(size-x+theta*(1-prob),x+theta*prob)
   if (log) v else exp(v)
 }
 
-rbetabinom <- function(n,prob,size,theta) {
-  a <- theta*prob
-  b <- theta*(1-prob)
-  rbinom(n,size=size,prob=rbeta(n,a,b))
+rbetabinom <- function(n,prob,size,theta,shape1,shape2) {
+  if (!missing(prob) && !missing(size) && missing(shape1) && missing(shape2)) {
+    shape1 <- theta*prob
+    shape2 <- theta*(1-prob)
+  }
+  rbinom(n,size=size,prob=rbeta(n,shape1,shape2))
+}
+
+## could implement distribution function as:
+## D(x) = 1 - (n B(b+n-x-1,a+x+1) Gamma(n) 3_F_2(1,a+x+1,-n+x+1;
+##   x+2, -b-n+x+2;1))/(B(a,b) B(n-x,x+2) Gamma(n+2))
+## (from Mathworld) -- would need to get 3F2 somewhere?
+## not in GSL!
+## http://tolstoy.newcastle.edu.au/R/e2/help/07/02/10988.html
+##  suggests Davies package could be adapted
+##  or ?? SuppDists ??
+
+gridsearch2d <- function(fun,v1min,v2min,v1max,v2max,n1=20,n2=20,
+                         logz=FALSE,sys3d=c("both","contour","image"),...) {
+  sys3d=match.arg(sys3d)
+  redraw = function(v1vec,v2vec,m) {
+    if (sys3d=="contour") {
+      contour(v1vec,v2vec,m,xlab="",ylab="",...)
+    } else image(v1vec,v2vec,m,xlab="",ylab="",...)
+    if (sys3d=="both") contour(v1vec,v2vec,m,add=TRUE,...)
+  }
+  recalc = function(v1vec,v2vec,logz) {
+    m = apply2d(fun,v1vec,v2vec)
+    mindm = pmax(diff(sort(m)),1e-10)
+    if (logz) m = log10(m-min(m)+mindm)
+    m
+  }
+  v1vec = seq(v1min,v1max,length=n1)
+  v2vec = seq(v2min,v2max,length=n2)
+  m = recalc(v1vec,v2vec,logz)
+  stop1 = FALSE
+  first = TRUE
+  while (!stop1) {
+    redraw(v1vec,v2vec,m)
+    if (!first) {
+      resp = readline("Continue (y|n)? ")
+      stop1 = (toupper(resp)=="N")
+    }
+    first = FALSE
+    if (!stop1) {
+      cat("click on box corners\n")
+      z = lapply(locator(2),sort)
+      rect(z$x[1],z$y[1],z$x[2],z$y[2])
+      resp = readline("OK (y|n)? ")
+      if (toupper(resp)=="Y") {
+        v1min=z$x[1]
+        v1max=z$x[2]
+        v2min=z$y[1]
+        v2max=z$y[2]
+        v1vec = seq(v1min,v1max,length=n1)
+        v2vec = seq(v2min,v2max,length=n2)
+        m = recalc(v1vec,v2vec,logz)
+      }
+    }
+  }
+  resp = readline("get point (y|n)? ")
+  if (toupper(resp)=="Y") {
+    cat("click on point\n")
+    z=locator(1)
+    return(z)
+  } else invisible(NULL)
+}
+
+metropSB <- function(fn,start,deltap=NULL,
+                      scale=1,rptfreq=-1,
+                      acceptscale=1.01,rejectscale=0.99,
+                      nmax=10000,retvals=FALSE,retfreq=100,
+                      verbose=FALSE,...) {
+  ## initialization
+  ndim <- length(start)  # number of parameters/dimensions
+  p <- start             # current parameter vector = starting vector
+  minp <- start          # parameter vector corresponding to minimum value so far
+  val <- fn(p,...)     # current function value
+  minval <- val          # minimum value so far
+  if (retvals) {
+    info <- matrix(nrow=round(nmax/retfreq),ncol=3*ndim+3)
+    dimnames(info) <- list(NULL,c(paste("p",1:ndim,sep=""),
+                                  paste("minp",1:ndim,sep=""),
+                                  paste("deltap",1:ndim,sep=""),
+                                        "val","minval","accept"))
+    # save info on parameter values, function value, whether accepted or not, current best parameters,
+    # current best value, current jump size
+  }
+  it <- 1                # iteration count
+  if (is.null(deltap)) deltap <- p*0.05   # default starting jump size(s)
+  while (it<=nmax) {
+    oldp <- p                             # save current parameters and function value
+    oldval <- val
+    p <- p + runif(ndim,-1,1)*deltap      # perturb current values
+    val <- fn(p,...)                    # new function value
+    dval <- val-oldval                    # change
+    saveinfo <- (it %% retfreq == 0)
+    savecount <- it %/% retfreq
+    if (saveinfo) {
+      info[savecount,-ncol(info)] <- c(p,minp,deltap,val,minval)
+    }
+    if (verbose)
+      if (it %% 100 == 0)
+         cat(it,"\n")
+    if (dval<0 || (exp(-dval*scale)>runif(1))) {
+      ## accept new value
+      if (saveinfo) info[savecount,ncol(info)] <- 1
+      if (val<minval) {  # if better than best so far, record new minimum
+	minval <- val
+	minp <- p
+      }
+      deltap <- deltap*acceptscale   # increase jump size
+    } else {
+      ## replace old values
+      if (saveinfo) info[savecount,ncol(info)] <- 0
+      val <- oldval
+      p <- oldp
+      deltap <- deltap*rejectscale   # decrease jump size
+    }
+    it <- it+1
+    if ((rptfreq>0) && (it %% rptfreq)==1)
+      cat("it=",it," value=",val," min. val.=",minval,"\n")
+  }
+  if (retvals)
+    return(list(minimum=minval,estimate=minp,funcalls=it,retvals=info))
+  else
+    return(list(minimum=minval,estimate=minp,funcalls=it))
+}
+
+trcoef = function(x,inverse=FALSE) {
+  ## n.b. logit should come before log
+  vals=list(pattern=c("logit","log","sqrt"),
+    fun=c(plogis,exp,function(x) {x^2}),
+    ifun=c(qlogis,log,sqrt))
+  if (is.null(attr(x,"transf"))) attr(x,"transf") = character(length(x))
+  for (p in 1:length(vals[[1]])) {
+    pat = vals$pattern[[p]]
+    fun = vals$fun[[p]]
+    ifun = vals$ifun[[p]]
+    if (!inverse) {
+      w = grep(paste("^",pat,sep=""),names(x))
+      if (length(w)>0) {
+        attr(x,"transf")[w]=pat
+        names(x)[w] = gsub(pat,"",names(x)[w])      
+        x[w] = sapply(x[w],fun)
+      }
+    } else {
+      w = which(attr(x,"transf")==pat)
+      if (length(w)>0) {
+        attr(x,"transf")[w] = ""
+        names(x)[w] = paste(pat,names(x)[w],sep="")
+        x[w] = sapply(x[w],ifun)
+      }
+    }
+  }
+  if (all(attr(x,"transf")=="")) attr(x,"transf") = NULL
+  x
+}
+
+perturb.params = function(base,alt,which,
+  mult=FALSE,use.base=TRUE) {
+  if (!missing(alt)) {
+    chlist = mapply(
+      function(name,vals) {
+        x = lapply(vals,
+               function(z2) {
+                 if (mult) {
+                   base[[name]] = base[[name]]*z2}
+                 else base[[name]]=z2
+                 base
+               })
+        if (is.list(x)) x else list(x)
+      },
+      names(alt),alt)
+    chlist = unlist(chlist,recursive=FALSE)
+  }
+  if (use.base) {
+    chlist=append(list(base),chlist)
+  }
+  chlist
 }
