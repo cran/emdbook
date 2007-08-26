@@ -49,3 +49,7 @@
 	  (should consider removing dmvnorm and
 	    just referring users to mvtnorm::dmvnorm)
 	added cross-ref to mvtnorm::dmvnorm in dmvnorm.Rd
+
+1.0.9:  changed "Wrasse" to "Damsel[fish]" throughout (oops)
+        tweaked get.emdbook.packages (do.call rather than sapply)
+	tweaked LambertW NA behavior (still not optimal)
