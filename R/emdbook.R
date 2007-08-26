@@ -35,8 +35,10 @@ lambertW = function(z,b=0,maxiter=10,eps=.Machine$double.eps,
     t = f*t/(p*(w + f) - 0.5*(w + 2.0)*t/(w + f))
     w = w - t
     if (any(is.na(t) | is.na(w))) {
-      print(t)
-      print(w)
+      ## FIXME: what to do here?
+      ## stop("NAs encountered in LambertW")
+      ## print(t)
+      ## print(w)
     }
     if (abs(Re(t)) < (2.48*eps)*(1.0 + abs(Re(w)))
         && abs(Im(t)) < (2.48*eps)*(1.0 + abs(Im(w))))
@@ -122,8 +124,10 @@ get.emdbook.packages <- function() {
      "scatterplot3d")
    inst.pkgs = rownames(installed.packages())
    newpkgs <- pkglist[!pkglist %in% inst.pkgs]
-   if (length(newpkgs)>0)
-     sapply(pkglist,install.packages)
+   if (length(newpkgs)>0) {
+     do.call("install.packages",pkglist)
+   ## sapply(pkglist,install.packages)
+   }
  }
 
 

@@ -1,20 +1,20 @@
-\name{Wrasse}
-\alias{Wrasse}
-\alias{WrasseSettlement}
-\alias{WrasseRecruitment}
-\alias{WrasseRecruitment_sum}
+\name{Damselfish}
+\alias{Damselfish}
+\alias{DamselSettlement}
+\alias{DamselRecruitment}
+\alias{DamselRecruitment_sum}
 \docType{data}
-\title{Reef fish (wrasse) data}
+\title{Reef fish (damselfish) data}
 \description{
   Two data sets on \emph{Dascyllus trimaculatus}
-(three-spotted wrasse), one on the distribution of settlement densities
+(three-spot damselfish), one on the distribution of settlement densities
   to empty anemones across time and space, the other on survival
 (recruitment) of arriving settlers as a function of experimentally manipulated densities
   from Schmitt et al. (1999)
 }
-\usage{data(WrasseSettlement)
-data(WrasseRecruitment)
-data(WrasseRecruitment_sum)
+\usage{data(DamselSettlement)
+data(DamselRecruitment)
+data(DamselRecruitment_sum)
 }
 \format{
   Three data frames:

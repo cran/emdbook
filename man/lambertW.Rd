@@ -31,7 +31,8 @@ W Function", Advances in Computational Mathematics 5(4):329-359}
 \author{Nici Schraudolph <schraudo@inf.ethz.ch> (original
   version (c) 1998), Ben Bolker (R translation)
 }
-\seealso{\code{?Lambert} in the \code{gsl} package by Robin Hankin}
+\seealso{\code{?Lambert} in the \code{gsl} package by Robin Hankin,
+which uses Gnu Scientific Library code}
 \note{
 This implementation should return values within 2.5*eps of its
 counterpart in Maple V, release 3 or later.  Please report any
