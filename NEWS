@@ -53,3 +53,10 @@
 1.0.9:  changed "Wrasse" to "Damsel[fish]" throughout (oops)
         tweaked get.emdbook.packages (do.call rather than sapply)
 	tweaked LambertW NA behavior (still not optimal)
+
+1.1.0: argh, another tweak to get.emdbook.packages
+         tweaked deltavar to be slightly more general
+
+1.1.1  tweak to curve3d from Robert Burns
+       moved ChangeLog to NEWS
+       added axis.scinot

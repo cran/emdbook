@@ -1,5 +1,4 @@
-lambertW = function(z,b=0,maxiter=10,eps=.Machine$double.eps,
-    min.imag=1e-9) {
+lambertW = function(z,b=0,maxiter=10,eps=.Machine$double.eps,min.imag=1e-9) {
   badz = is.na(z)
   z.old = z
   z = z[!badz]
@@ -108,7 +107,7 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
     z <- apply2d(tmpfun,x,y)
     switch(sys3d,
            persp=persp(x,y,z,zlab=zlab,...),
-           contour=contour(x,y,z,...),
+           contour=contour(x,y,z,add=add,...),
            image=image(x,y,z,...),
            none=NA,
            wireframe={require("lattice"); 
@@ -125,7 +124,7 @@ get.emdbook.packages <- function() {
    inst.pkgs = rownames(installed.packages())
    newpkgs <- pkglist[!pkglist %in% inst.pkgs]
    if (length(newpkgs)>0) {
-     do.call("install.packages",pkglist)
+     do.call("install.packages",list(pkglist))
    ## sapply(pkglist,install.packages)
    }
  }
@@ -137,6 +136,8 @@ get.emdbook.packages <- function() {
 ## Sigma: var-cov function
 deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE) {
   expr <- as.expression(substitute(fun))
+  nvals <- length(eval(expr,envir=as.list(meanval)))
+  vecexp <- nvals>1 ## is the result a vector?
   if (missing(vars)) {
     if (missing(meanval) || is.null(names(meanval)))
       stop("must specify either variable names or named values for means")
@@ -153,16 +154,25 @@ deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE) {
       stop(paste("Error within derivs:",derivs))
     }
   } else {
-    if (verbose) print(derivs)
+    if (verbose) {
+      cat("derivs:\n")
+      print(derivs)
+    }
     nderivs <- sapply(derivs,eval,envir=as.list(meanval))
-    if (verbose) cat(nderivs,"\n")
+    if (verbose) {
+      cat("numeric derivs:\n")
+      print(nderivs)
+      cat("\n")
+    }
   }
   if (!is.matrix(Sigma) && length(Sigma)>1) Sigma <- diag(Sigma)
   ## if (!is.matrix(Sigma)) sum(Sigma*nderivs^2) else
+  if (vecexp && is.list(nderivs)) nderivs <- do.call("cbind",nderivs)
   if (is.matrix(nderivs)) {
-    apply(nderivs,1,function(z) c(z %*% Sigma %*% matrix(z)))
-  } else c(nderivs %*% Sigma %*% matrix(nderivs))
+    r <- apply(nderivs,1,function(z) c(z %*% Sigma %*% matrix(z)))
+  } else r <- c(nderivs %*% Sigma %*% matrix(nderivs))
   ## really only want diagonal
+  r
 }
 
 deltamethod <- function(fun,z,var="x",params=NULL,max.order=2) {
@@ -230,7 +240,16 @@ scinot <- function(x,format=c("latex","expression"),delim="$",
   }
   v
 }
- 
+
+## axis in scientific notation/expressions
+axis.scinot <- function(side,at) {
+  if (missing(at)) at <- axTicks(side)
+  axis(side=side,labels=FALSE)
+  invisible(lapply(at,
+         function(a) mtext(side=side,at=a,eval(scinot(a,"expression")),
+                           line=par("mgp")[2])))
+}
+
 ## convert R2WinBUGS output to coda/mcmc
 as.mcmc.bugs <- function(x) {
   if (!require("coda")) stop("coda is required to use as.mcmc.bugs")
