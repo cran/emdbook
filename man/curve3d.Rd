@@ -7,8 +7,11 @@
 }
 \usage{
 curve3d(expr, from = c(0, 0), to = c(1, 1), n = c(41, 41), add = FALSE,
+xlab=varnames[1],
+ylab=varnames[2],
 zlab = NULL, log = NULL, sys3d = c("persp", "wireframe", "rgl",
-"contour", "image", "none"), ...)
+"contour", "image", "none"),
+varnames=c("x","y"),...)
 }
 \arguments{
   \item{expr}{a mathematical expression using \code{x} and \code{y} as
@@ -18,13 +21,16 @@ zlab = NULL, log = NULL, sys3d = c("persp", "wireframe", "rgl",
   \item{n}{number of grid points in each direction}
   \item{add}{(logical) add to an existing plot?  (only possible for
     contour plots or rgl)}
+  \item{xlab}{x label}
+  \item{ylab}{y label}
   \item{zlab}{z label}
   \item{log}{(character): \code{"x"}, \code{"y"}, or \code{"xy"} for
     logarithmic axes}
   \item{sys3d}{3D plotting system to use: one of
     \code{"persp"}, \code{"wireframe"},
     \code{"rgl"}, \code{"contour"}, \code{"image"},
-   or \code{"none"}}
+    or \code{"none"}}
+  \item{varnames}{names of variables to substitute}
   \item{\dots}{additional arguments to the plotting functions}
 }
 \value{
@@ -36,6 +42,28 @@ zlab = NULL, log = NULL, sys3d = c("persp", "wireframe", "rgl",
 \author{Ben Bolker}
 \seealso{\code{\link{outer}}, \code{\link{curve}}}
 \examples{
-
+curve3d(cos(2*pi*x)+sin(2*pi*y/3),
+ from=c(0,0),to=c(1,1))
+x <- 1
+y <- 3
+curve3d(cos(2*pi*x)+sin(2*pi*y/3),
+ from=c(0,0),to=c(1,1),sys3d="wireframe")
+curve3d(x*cos(2*pi*a/x)+sin(2*pi*b/y),
+ from=c(0,0),to=c(1,1),sys3d="wireframe",
+varnames=c("a","b"))  ## identical
+par(mfrow=c(2,2))
+curve3d(cos(2*pi*x)+sin(2*pi*y/3),
+ from=c(0,0),to=c(1,1),sys3d="image")
+curve3d(x*cos(2*pi*a/x)+sin(2*pi*b/y),
+ from=c(0,0),to=c(1,1),sys3d="image",
+varnames=c("a","b"))  ## identical
+x <- 4
+curve3d(cos(2*pi*a/x)+y*sin(2*pi*b/y),
+ from=c(0,0),to=c(1,1),sys3d="image",
+varnames=c("a","b"))
+curve3d(cos(2*pi*x)+sin(2*pi*y/3),
+ from=c(0,0),to=c(1,1),sys3d="image")
+curve3d(cos(2*pi*x)+sin(2*pi*y/3),
+ sys3d="contour",add=TRUE)
 }
 \keyword{hplot}

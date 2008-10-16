@@ -63,26 +63,31 @@ apply2d = function(fun,x,y,...) {
 
 ## TO DO: log scales
 curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE, 
-                     zlab = NULL, log = NULL, 
+                     xlab=varnames[1],ylab=varnames[2],
+                     zlab = NULL,
+                     log = NULL, 
                      sys3d = c("persp","wireframe","rgl","contour","image",
                        "none"),
+                     varnames = c("x","y"),
                      ...) 
 {
-  sys3d <- match.arg(sys3d)
-  if (add && !(sys3d %in% c("contour","rgl")))
-    stop("can only add contour or rgl to 3D plots")
-  n = rep(n,length.out=2)
-  sexpr <- substitute(expr)
-  if (is.name(sexpr)) {
-    fcall <- paste(sexpr, "(x,y)")
-    expr <- parse(text = fcall)
-    if (is.null(zlab)) 
-      zlab <- fcall
+    vars <- lapply(as.list(varnames),parse,file="",n=NULL)
+    sys3d <- match.arg(sys3d)
+    if (add && !(sys3d %in% c("contour","rgl")))
+      stop("can only add contour or rgl to 3D plots")
+    n = rep(n,length.out=2)
+    sexpr <- substitute(expr)
+    if (is.name(sexpr)) {
+        fcall <- paste(sexpr, "(",varnames[1],",",varnames[2],")",sep="")
+        expr <- parse(text = fcall)
+        if (is.null(zlab))
+          zlab <- fcall
   } else {
     if (!(is.call(sexpr) && 
-          (match("x", all.vars(sexpr), nomatch = 0) || 
-           match("y", all.vars(sexpr), nomatch = 0))))
-      stop("'expr' must be a function or an expression containing 'x' and 'y'")
+          (match(varnames[1], all.vars(sexpr), nomatch = 0) || 
+           match(varnames[2], all.vars(sexpr), nomatch = 0))))
+      stop(paste("'expr' must be a function or an expression containing '",
+           varnames[1],"' and '",varnames[2],"'",sep=""))
     expr <- sexpr
     if (is.null(zlab)) 
       zlab <- deparse(sexpr)
@@ -91,7 +96,7 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
     log
   if (length(lg) == 0) 
     lg <- ""
-  x <- if (lg != "" && "x" %in% strsplit(lg, NULL)[[1]]) {
+    x <- if (lg != "" && "x" %in% strsplit(lg, NULL)[[1]]) {
         if (any(c(from[1], to[1]) <= 0)) 
             stop("'from[1]' and 'to[1]' must be > 0 with log=\"x\"")
         exp(seq(log(from[1]), log(to[1]), length = n))
@@ -102,18 +107,23 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
         exp(seq(log(from[2]), log(to[2]), length = n))
     } else seq(from[2], to[2], length = n[2])
     tmpfun <- function(x,y) {
-      eval(expr, envir = list(x = x, y=y), enclos = parent.frame())
+        env <- list(x,y)
+        names(env) <- varnames
+        ## SKIP the inside of curve3d, go back one more level ...
+        eval(expr, envir = env, enclos = parent.frame(2))
     }
     z <- apply2d(tmpfun,x,y)
     switch(sys3d,
-           persp=persp(x,y,z,zlab=zlab,...),
-           contour=contour(x,y,z,add=add,...),
-           image=image(x,y,z,...),
+           persp=persp(x,y,z,xlab=xlab,ylab=ylab,zlab=zlab,...),
+           contour=contour(x,y,z,xlab=xlab,ylab=ylab,add=add,...),
+           image=image(x,y,z,xlab=xlab,ylab=ylab,...),
            none=NA,
-           wireframe={require("lattice"); 
-                      dimnames(z) <- list(x=x,y=y);
-                      print(wireframe(z))},
-           rgl={require("rgl"); rgl::persp3d(x,y,z,zlab=zlab,add=add,...)})
+           wireframe={require("lattice");
+                      ## browser()
+                      print(wireframe(z,row.values=x,col.values=y,...))},
+           rgl={require("rgl"); rgl::persp3d(x,y,z,
+                                             xlab=xlab,
+                                             ylab=ylab,zlab=zlab,add=add,...)})
   invisible(list(x=x,y=y,z=z))
 }
 
@@ -398,10 +408,16 @@ HPDregionplot <- function(x,vars=1:2,h=c(1,1),n=50,lump=TRUE,prob=0.95,
 
 calcslice <- function(fit1,fit2,fn=fit1@minuslogl,range=c(-0.1,1.1),
                   n=400) {
-  slicep = seq(range[1],range[2],length=n)
-  slicepars = t(sapply(slicep,function(x) (1-x)*coef(fit1)+x*coef(fit2)))
-  v = apply(slicepars,1,function(x) do.call("fn",as.list(x)))
-  list(x=slicep,y=v)
+    ## require(bbmle) 
+    slicep = seq(range[1],range[2],length=n)
+    slicepars = t(sapply(slicep,function(x) (1-x)*coef(fit1)+x*coef(fit2)))
+    ## FIXME: warning about parnames from R CMD check
+    if (is.null(parnames(fn))) {
+        v = apply(slicepars,1,function(x) do.call("fn",as.list(x)))
+    } else { ## vector-argument function
+        v = apply(slicepars,1,fn)
+    }
+    list(x=slicep,y=v)
 }
 
 rchibarsq <- function(n,df=1,mix=0.5) {
@@ -604,7 +620,7 @@ metropSB <- function(fn,start,deltap=NULL,
     p <- p + runif(ndim,-1,1)*deltap      # perturb current values
     val <- fn(p,...)                    # new function value
     dval <- val-oldval                    # change
-    saveinfo <- (it %% retfreq == 0)
+    saveinfo <- (retvals && it %% retfreq == 0)
     savecount <- it %/% retfreq
     if (saveinfo) {
       info[savecount,-ncol(info)] <- c(p,minp,deltap,val,minval)
@@ -688,4 +704,34 @@ perturb.params = function(base,alt,which,
     chlist=append(list(base),chlist)
   }
   chlist
+}
+
+## copied from traceplot in coda package, but uses lattice
+traceplot.mcmc <- function (x, data = NULL, outer, aspect = "xy",
+                            default.scales = list(y=list(relation = "free")), 
+                            start = 1, thin = 1,
+                            main = attr(x, "title"), xlab = "",
+                            ylab="",
+                            plot.points = "rug", ...,
+                            subset = coda:::thinned.indices(x, start = start, 
+                              thin = thin))
+  ## would like to supply subset argument that would also
+  ## select specific variables
+  ## consider aspect="fill" as an alternative
+{
+    require(lattice)
+    if (!is.R()) {
+        stop("This function is not yet available in S-PLUS")
+    }
+    if (!missing(outer)) 
+        warning("specification of outer ignored")
+    data <- as.data.frame(x)
+    v <- seq(nrow(x))
+    form <- as.formula(paste(paste(lapply(names(data), as.name),
+        collapse = "+"), "~v"))
+    xyplot(form, data = data[subset, ], outer = TRUE, aspect = aspect, 
+           default.scales = default.scales, main = main, xlab = xlab,
+           ylab=ylab,
+           type="l",
+           plot.points = plot.points, ...)
 }
