@@ -38,7 +38,7 @@ HPDregionplot(x, vars = 1:2, h = c(1, 1), n = 50, lump = TRUE, prob = 0.95, xlab
   need to tinker with \code{h} and \code{n} (see \code{kde2d}
   in the \code{MASS} package).
   }
-  \seealso{\code{HPDinterval} in the \code{\coda} package,
+  \seealso{\code{HPDinterval} in the \code{coda} package,
   \code{ellipse} package}
 \examples{
 library(MASS)

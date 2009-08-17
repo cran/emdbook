@@ -37,6 +37,4 @@ data(DamselRecruitment_sum)
   on local abundance", Ecology Letters 2:294-303.  (Original data kindly provided
   by Schmitt and Holbrook.)
 }
-\examples{
-}
 \keyword{datasets}

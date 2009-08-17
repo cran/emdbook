@@ -1,3 +1,9 @@
+1.2: 17/08/2009
+   change is.na() test in lambertW to is.finite()
+   added ggplot2 to install.packages(), streamline
+   REMOVED "traceplot" code: nearly identical to xyplot.mcmc
+     etc. in coda package
+
 1.1.1.1: 16/10/2008
       add firfec0.bug to BUGS
       reverse date order of NEWS

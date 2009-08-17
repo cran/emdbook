@@ -10,8 +10,6 @@
 \usage{
 get.emdbook.packages()
 }
-\arguments{
-  }
 \value{
   none: installs packages as a side effect
 }

@@ -1,18 +1,29 @@
 \name{lump.mcmc.list}
+% \alias{traceplot}
+% \alias{traceplot.mcmc}
+% \alias{traceplot.mcmc.list}
 \alias{lump.mcmc.list}
-\title{Combine multiple MCM chains}
+\title{Utility functions for mcmc objects}
 \description{
-  Converts an \code{mcmc.list} object to an \code{mcmc}
-  object by combining chains for all variables
+  Creates traceplots or combine mcmc list into
+  mcmc objects
 }
 \usage{
 lump.mcmc.list(x)
+%\method{traceplot}{mcmc}(x,smooth=TRUE,ylab="",sys="lattice",\dots)
+%\method{traceplot}{mcmc.list}(x,smooth=TRUE,ylab="",sys="lattice",\dots)
 }
 \arguments{
   \item{x}{an \code{mcmc.list} object}
+%  \item{smooth}{(logical) add smoothed lines to trace plots?}
+%  \item{ylab}{(character) y-label for trace plots}
+%  \item{sys}{(character) graphics system to use}
+%  \item{\dots}{extra arguments (for generic consistency)}
 }
 \value{
-  an \code{mcmc} object 
+%  \code{traceplot.mcmc} and  \code{traceplot.mcmc.list}
+%  create plots; \code{lump.mcmc.list} returns
+a single \code{mcmc} object with the chains lumped together
 }
 \author{Ben Bolker}
 \seealso{\code{coda} package}
