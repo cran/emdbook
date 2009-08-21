@@ -30,7 +30,7 @@ axis.scinot(side,at)
 }
 \author{Ben Bolker}
 \seealso{\code{\link{formatC}}, \code{\link{expression}},
-  \code{\link{plotmath}, \code{\link{axis}}, \code{\link{axTicks}}},
+  \code{\link{plotmath}}, \code{\link{axis}}, \code{\link{axTicks}},
   \code{latexSN} in the \code{Hmisc} package, \code{eaxis} in the \code{sfsmisc} package}
 \examples{
 scinot(1e-5)
