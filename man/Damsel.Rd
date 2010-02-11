@@ -35,6 +35,8 @@ data(DamselRecruitment_sum)
 \source{
   Schmitt et al. (1999), "Quantifying the effects of multiple processes
   on local abundance", Ecology Letters 2:294-303.  (Original data kindly provided
-  by Schmitt and Holbrook.)
+  by Schmitt and Holbrook.).
+You can also find versions of these data
+at \url{http://mcr.lternet.edu/data/dataset.php}.
 }
 \keyword{datasets}

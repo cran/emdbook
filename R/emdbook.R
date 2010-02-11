@@ -131,7 +131,8 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
 }
 
 get.emdbook.packages <- function() {
-   pkglist = c("adapt","bbmle","chron",
+   pkglist = c(## "adapt",
+     "bbmle","chron",
      "coda","ellipse","ggplot2",
      "gplots","gtools","gdata",
      "MCMCpack","deSolve","plotrix","R2WinBUGS","reshape","rgl",
@@ -143,6 +144,7 @@ get.emdbook.packages <- function() {
    ##  do.call("install.packages",list(pkglist))
    ## sapply(pkglist,install.packages)
    }
+   warning("The adapt package is no longer available. You can work through 99% of the material in _Ecological Models and Data_ without it; for more information see http://emdbolker.wikidot.com/r")
  }
 
 

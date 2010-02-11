@@ -1,3 +1,6 @@
+1.2.1: 11/02/2010 remove adapt from install.packages(),
+   add warning about adapt, move CITATION file
+
 1.2: 17/08/2009
    change is.na() test in lambertW to is.finite()
    added ggplot2 to install.packages(), streamline

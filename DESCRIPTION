@@ -1,8 +1,8 @@
 Package: emdbook
 Type: Package
 Title: Ecological models and data (book support)
-Version: 1.2
-Date: 2009-08-17
+Version: 1.2.1
+Date: 2010-02-11
 Author: Ben Bolker
 Maintainer: Ben Bolker <bolker@ufl.edu>
 Description: Auxiliary functions and data sets for _Ecological Models
@@ -12,6 +12,6 @@ Suggests: R2WinBUGS, rgl, ellipse, coda, bbmle, reshape
 Depends: MASS, lattice
 License: GPL
 URL: http://people.biology.ufl.edu/bolker/emdbook
-Packaged: 2009-08-21 14:29:54 UTC; ben
+Packaged: 2010-02-12 13:53:41 UTC; ben
 Repository: CRAN
-Date/Publication: 2009-08-21 14:47:36
+Date/Publication: 2010-02-12 13:54:10
