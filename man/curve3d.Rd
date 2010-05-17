@@ -6,7 +6,8 @@
   and plots it
 }
 \usage{
-curve3d(expr, from = c(0, 0), to = c(1, 1), n = c(41, 41), add = FALSE,
+curve3d(expr, from = c(0, 0), to = c(1, 1), n = c(41, 41),
+xlim, ylim, add = FALSE,
 xlab=varnames[1],
 ylab=varnames[2],
 zlab = NULL, log = NULL, sys3d = c("persp", "wireframe", "rgl",
@@ -18,6 +19,8 @@ varnames=c("x","y"),...)
     the independent variables}
   \item{from}{minimum values for \code{x} and \code{y}}
   \item{to}{maximum values for \code{x} and \code{y}}
+  \item{xlim}{range of values for \code{x}}
+  \item{ylim}{range of values for \code{y}}
   \item{n}{number of grid points in each direction}
   \item{add}{(logical) add to an existing plot?  (only possible for
     contour plots or rgl)}

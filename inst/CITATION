@@ -1,13 +1,25 @@
-citHeader("To cite package 'emdbook' in publications use:")
+citHeader("To cite package 'emdbook' in publications, please",
+"cite the associated textbook (possibly in addition to the
+package itself):")
 year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
 vers <- paste("R package version", meta$Version)
+citEntry(entry="Book",
+         title="Ecological Models and Data in R",
+         author=personList(as.person("Benjamin M. Bolker")),
+         year= "2008",
+         note = "ISBN: 0691125228",
+         publisher = "Princeton University Press",
+         address = "Princeton, NJ",
+textVersion=paste("Benjamin M. Bolker (2008)",
+"Ecological Models and Data in R (Princeton University Press: Princeton, NJ)",
+"ISBN: 0691125228."))
+
 citEntry(entry="Manual",
-         title = "emdbook: Ecological Models and Data in R", 
-         author = personList(as.person("Ben Bolker")),
-         year = year,
-note = vers,
-textVersion =
-paste("Ben Bolker (",
-      year,
-      "). emdbook: Ecological Models and Data in R",
+         title="emdbook: Ecological Models and Data in R",
+         author=personList(as.person("Ben Bolker")),
+         year=year,
+         note=vers,
+textVersion = paste("Ben Bolker (",
+      year, 
+      "). emdbook: Ecological Models and Data in R, ",
       vers, ".", sep=""))
