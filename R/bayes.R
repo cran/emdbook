@@ -86,10 +86,10 @@ HPDregionplot <- function(x,vars=1:2,h,n=50,lump=TRUE,prob=0.95,
     else var2 <- lapply(x,function(z)z[,vars[2]])
   } else var2 <- x[,vars[2]]
   if (!mult) {
-    post1 = kde2d(var1,var2,n=n,h=h)
+    post1 <- kde2d(var1,var2,n=n,h=h)
     ## post0 = post1
   } else {
-    post1 = mapply(kde2d,var1,var2,MoreArgs=list(n=n))
+    post1 = mapply(kde2d,var1,var2,MoreArgs=list(n=n,h=h))
   }
   dx <- diff(post1$x[1:2])
   dy <- diff(post1$y[1:2])

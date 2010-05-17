@@ -9,14 +9,14 @@
   a bivariate density.
 }
 \usage{
-HPDregionplot(x, vars = 1:2, h , n = 50, lump = TRUE, prob = 0.95, xlab = NULL, ylab = NULL, ...)
+HPDregionplot(x, vars = 1:2, h, n = 50, lump = TRUE, prob = 0.95, xlab = NULL, ylab = NULL, ...)
 }
 \arguments{
   \item{x}{an \code{mcmc} or \code{mcmc.list} object}
   \item{vars}{which variables to plot: numeric or character vector}
-  \item{h}{bandwidth of 2D kernel smoother (vector of length 2,
-   previously set to c(1,1) overriding default value in
-   \code{\link[MASS]{kde2d}}}
+  \item{h}{bandwidth of 2D kernel smoother (previous default value was \code{c(1,1)},
+    which worked poorly with some plots with very small scales;
+  if not specified, defaults to values in \code{\link[MASS]{kde2d}})}
   \item{n}{number of points at which to evaluate the density grid}
   \item{lump}{if \code{x} is an \code{mcmc.list} object, lump the
     chains together for plotting?}
@@ -37,15 +37,17 @@ HPDregionplot(x, vars = 1:2, h , n = 50, lump = TRUE, prob = 0.95, xlab = NULL, 
 }
 \author{Ben Bolker}
 \note{Accuracy may be limited by density estimation; you may
-  need to tinker with \code{h} and \code{n} 
- (see \code{\link[MASS]{kde2d}}).
+  need to tinker with \code{h} and \code{n} (see \code{kde2d}
+  in the \code{MASS} package).
   }
-  \seealso{\code{\link[coda]{HPDinterval}}
+  \seealso{\code{HPDinterval} in the \code{coda} package,
   \code{ellipse} package}
 \examples{
 library(MASS)
 library(coda)
 z <- mvrnorm(1000,mu=c(0,0),Sigma=matrix(c(2,1,1,2),nrow=2))
+z2 <- mvrnorm(1000,mu=c(0,0),Sigma=matrix(c(2,1,1,2),nrow=2))
 HPDregionplot(mcmc(z))
+HPDregionplot(mcmc.list(mcmc(z),mcmc(z2)))
 }
 \keyword{hplot}
