@@ -65,7 +65,9 @@ apply2d = function(fun,x,y,...) {
 }
 
 ## TO DO: log scales
-curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE, 
+curve3d <- function (expr, from=c(0,0), to=c(1,1),
+                     n = c(41,41),
+                     xlim, ylim, add = FALSE, 
                      xlab=varnames[1],ylab=varnames[2],
                      zlab = NULL,
                      log = NULL, 
@@ -79,6 +81,13 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1), n = c(41,41), add = FALSE,
     if (add && !(sys3d %in% c("contour","rgl")))
       stop("can only add contour or rgl to 3D plots")
     n = rep(n,length.out=2)
+    if (!missing(xlim) && !missing(ylim)) {
+      if (!missing(from) | !missing(to)) {
+        stop("must specify one of (xlim,ylim) or (from,to)")
+      }
+      from <- c(xlim[1],ylim[1])
+      to <- c(xlim[2],ylim[2])
+    }
     sexpr <- substitute(expr)
     if (is.name(sexpr)) {
         fcall <- paste(sexpr, "(",varnames[1],",",varnames[2],")",sep="")
@@ -345,21 +354,27 @@ ncredint <- function(pvec,npost,level=0.95,tol=0.01,verbose=FALSE) {
 
 
 
-calcslice <- function(fit1,fit2,fn=fit1@minuslogl,range=c(-0.1,1.1),
-                  n=400) {
-    ## require(bbmle) 
-    slicep = seq(range[1],range[2],length=n)
-    slicepars = t(sapply(slicep,function(x) (1-x)*coef(fit1)+x*coef(fit2)))
-    if (!require(bbmle)) {
-      stop("need to install bbmle in order to use calcslice")
+calcslice <- function(fit1,fit2,fn=fit1@minuslogl,
+                      range=c(-0.1,1.1),
+                      n=400) {
+  ## require(bbmle) 
+  slicep = seq(range[1],range[2],length=n)
+  if (!require(bbmle)) {
+    stop("need to install bbmle in order to use calcslice")
+  }
+  slicepars = t(sapply(slicep,function(x) (1-x)*coef(fit1)+x*coef(fit2)))
+  ## FIXME: warning about parnames from R CMD check
+  if (is.null(bbmle::parnames(fn))) {
+    dd <- fit1@data
+    ff <- names(formals(fn))
+    if (!("..." %in% ff)) {
+      dd <- dd[names(dd) %in% ff]
     }
-    ## FIXME: warning about parnames from R CMD check
-    if (is.null(bbmle::parnames(fn))) {
-        v = apply(slicepars,1,function(x) do.call("fn",as.list(x)))
-    } else { ## vector-argument function
-        v = apply(slicepars,1,fn)
-    }
-    list(x=slicep,y=v)
+    v = apply(slicepars,1,function(x) do.call(fn,c(as.list(x,dd))))
+  } else { ## vector-argument function
+    v = apply(slicepars,1,fn)
+  }
+  list(x=slicep,y=v)
 }
 
 rchibarsq <- function(n,df=1,mix=0.5) {
@@ -615,3 +630,18 @@ trcoef = function(x,inverse=FALSE) {
   x
 }
 
+contour3d <- function(x,y,z,contourArgs=NULL,...) {
+  require(rgl)
+  if (is.list(x)) {
+    if (!all(sort(names(x))==c("x","y","z")))
+      stop("list should contain components 'x', 'y', 'z'")
+    z <- x$z
+    y <- x$y
+    x <- x$x
+  }
+  ccc = do.call(contourLines,c(list(x,y,z),contourArgs))
+  ccc = lapply(ccc, function(x) {
+    list(x=x$x,y=x$y,z=rep(x$level,length(x$x))) })
+  invisible(mapply(lines3d,ccc,MoreArgs=list(...)))
+  invisible(ccc)
+}
