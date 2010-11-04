@@ -66,7 +66,7 @@
 ##            plot.points = plot.points, ...)
 ## }
 
-HPDregionplot <- function(x,vars=1:2,h=c(1,1),n=50,lump=TRUE,prob=0.95,
+HPDregionplot <- function(x,vars=1:2,h,n=50,lump=TRUE,prob=0.95,
                           xlab=NULL,ylab=NULL,...) {
   require("MASS") ## for kde2d
   parnames <- if (class(x)=="mcmc.list") colnames(x[[1]]) else colnames(x)
@@ -91,11 +91,25 @@ HPDregionplot <- function(x,vars=1:2,h=c(1,1),n=50,lump=TRUE,prob=0.95,
   } else {
     post1 = mapply(kde2d,var1,var2,MoreArgs=list(n=n))
   }
-  dx = diff(post1$x[1:2])
-  dy = diff(post1$y[1:2])
-  sz = sort(post1$z)
-  c1 = cumsum(sz)*dx*dy
-  levels = sapply(prob,function(x) {approx(c1,sz,xout=1-x)$y})
+  dx <- diff(post1$x[1:2])
+  dy <- diff(post1$y[1:2])
+  sz <- sort(post1$z)
+  ## debugging stuff
+  ## if (FALSE) {
+  ##   lattice:::contourplot(post1$z)
+  ##   d <- with(post1,data.frame(expand.grid(y=y,x=x),z=c(z)))
+  ##   lattice:::contourplot(z~x*y,data=d)
+  ##   with(post1,contour(x,y,z))
+  ##   points(x[,1],x[,2],col=2)
+  ##   afun <- function(n) {
+  ##     k2 <- kde2d(x[,1],x[,2],n=n,h=c(1,1))
+  ##     with(k2,sum(z)*diff(x)[1]*diff(y)[1])
+  ##   }
+  ##   sapply(5:25,afun)
+  ## }
+  c1 <- cumsum(sz)*dx*dy
+  ## trying to find level containing 95% of volume ...
+  levels <- sapply(prob,function(x) {approx(c1,sz,xout=1-x)$y})
   ## meanvec <- c(mean(var1),mean(var2))
   if (is.null(xlab)) xlab <- varnames[1]
   if (is.null(ylab)) ylab <- varnames[2]

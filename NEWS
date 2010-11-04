@@ -1,3 +1,6 @@
+1.2.2.2: change default bandwidth within HPDregion
+         minor cleanup to pass R CMD check
+
 1.2.2.1: add @data to calcslice
         24/05/2010 (tweak/bugfix)
 
