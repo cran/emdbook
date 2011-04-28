@@ -1,1 +1,14 @@
-exportPattern("^[^\\.]")
+## exportPattern("^[^\\.]")
+export(lambertW,lWasymp,lambertW_base,
+       get.emdbook.packages,
+       deltavar,deltamethod,
+       metropSB,trcoef,
+       lseq,scinot,axis.scinot,
+       tcredint,ncredint,
+       as.mcmc.bugs,lump.mcmc.list,perturb.params,
+       HPDregionplot,
+       dzinbinom,rzinbinom,
+       rchibarsq,dchibarsq,pchibarsq,qchibarsq,
+       dmvnorm,dbetabinom,rbetabinom,
+       calcslice,gridsearch2d,contour3d,apply2d,curve3d)
+
