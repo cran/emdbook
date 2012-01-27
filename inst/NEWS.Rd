@@ -4,6 +4,12 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
+\section{CHANGES IN VERSION 1.3.2}{
+     \itemize{
+       \item small fix for NAs in lambertW
+       \item tweaks to avoid NOTES in CRAN check, cleanup
+     }
+}
 \section{CHANGES IN VERSION 1.3.1}{
     \itemize{
       \item asymptotic extension to lambertW (remove possibility of

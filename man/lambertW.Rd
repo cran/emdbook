@@ -33,9 +33,12 @@ Corless et al by way of
 \url{http://mathworld.wolfram.com/LambertW-Function.html})
 is used: \code{lambertW} is a wrapper that automatically selects
 the asymptotic formula where appropriate.
-
-In ecology, the Lambert W can be used to solve the so-called
-"Rogers equation" for predator functional response with depletion.
+\itemize{
+  \item{In ecology, the Lambert W can be used to solve the so-called
+    "Rogers equation" for predator functional response with depletion.}
+  \item{In epidemiology, the Lambert W function solves the final-size
+    equation of a simple SIR epidemic model.}
+  }
 }
 \value{
   Complex or real vector of solutions.
@@ -47,11 +50,13 @@ W Function", Advances in Computational Mathematics 5(4):329-359}
 }
 \seealso{\code{?Lambert} in the \code{gsl} package by Robin Hankin,
   which uses Gnu Scientific Library code; also \code{?lambertW}
-in the \code{VGAM} package}
+in the \code{VGAM} and \code{pracma} packages, and the \code{lambertW} package}
 \note{
 This implementation should return values within 2.5*eps of its
 counterpart in Maple V, release 3 or later.  Please report any
 discrepancies to the author or translator.
+
+The derivative of the \code{lambertW} function is \code{plogis(-lambertW)}.
 }
 \examples{
 curve(lambertW(x),from=0,to=10)
@@ -92,5 +97,11 @@ tmpf <- function(x) {
   (L1-L0)/L0
 }
 curve(tmpf,from=1,to=307,log="y")
+
+## derivative
+## don't run (avoid numDeriv dependency)
+## require(numDeriv)
+##   grad(lambertW(1))
+##   plogis(-lambertW(1))
 }
 \keyword{math}

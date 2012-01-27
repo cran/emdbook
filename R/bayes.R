@@ -115,7 +115,7 @@ HPDregionplot <- function(x,vars=1:2,h,n=50,lump=TRUE,prob=0.95,
   if (is.null(ylab)) ylab <- varnames[2]
   contour(post1$x,post1$y,post1$z,level=levels,
           xlab=xlab,ylab=ylab,drawlabels=FALSE,...)
-  invisible(contourLines(post1$x,post1$y,post1$z,level=levels))
+  invisible(contourLines(post1$x,post1$y,post1$z,levels=levels))
 }
 
 ## make an mcmc object out of an mcmc.list

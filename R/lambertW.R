@@ -12,8 +12,8 @@ lWasymp <- function(z,logz) {
 
 lambertW <- function(z,...) {
   bigz <- Mod(z)>1e307
-  if (!any(bigz)) return(lambertW_base(z,...))
-  res <- numeric(length(z))
+  if (!any(na.omit(bigz))) return(lambertW_base(z,...))
+  res <- rep(NA_real_,length(z))
   res[bigz] <- lWasymp(logz=log(z[bigz]))
   res[!bigz] <- lambertW_base(z[!bigz],...)
   res
@@ -70,11 +70,10 @@ lambertW_base <- function(z,b=0,maxiter=10,eps=.Machine$double.eps,min.imag=1e-9
   if (n==maxiter) warning(paste("iteration limit (",maxiter,
         ") reached, result of W may be inaccurate",sep=""))
   if (all(Im(w[!is.na(w)])<min.imag)) w = as.numeric(w)
-  if (sum(badz)>1) {
-    w.new = numeric(length(z.old))
-    w.new[!badz] = w
-    w.new[badz] = NA
-    w = w.new
+  if (sum(badz)>0) {
+    w.new <- rep(NA_real_,length(z.old))
+    w.new[!badz] <- w
+    w <- w.new
   }
   return(w)
 }
