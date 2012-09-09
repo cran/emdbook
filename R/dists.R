@@ -65,7 +65,7 @@ dmvnorm <- function (x, mu, Sigma, log = FALSE, tol = 1e-06) {
     }
     if (!all(dim(Sigma) == c(p, p)) || nrow(x) != nrow(mu)) 
         stop("incompatible arguments")
-    eS <- eigen(Sigma, symmetric = TRUE, EISPACK = TRUE)
+    eS <- eigen(Sigma, symmetric = TRUE) 
     ev <- eS$values
     if (!all(ev >= -tol * abs(ev[1]))) 
         stop("Sigma is not positive definite")
