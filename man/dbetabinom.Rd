@@ -13,7 +13,7 @@ dbetabinom(x, prob, size,  theta, shape1, shape2, log = FALSE)
 rbetabinom(n, prob, size, theta, shape1, shape2)
 }
 \arguments{
-  \item{x}{a numeric vector of values}
+  \item{x}{a numeric vector of integer values}
   \item{prob}{numeric vector: mean probability of underlying beta distribution}
   \item{size}{integer: number of samples}
   \item{theta}{overdispersion parameter}
@@ -34,7 +34,9 @@ the more traditional parameterization in terms of
 the parameters of the per-trial probability distribution.
 }
 \value{
-   A vector of probability densities or random deviates.
+  A vector of probability densities or random deviates.
+  If \code{x} is non-integer, the result is zero (and
+  a warning is given).
 }
 \references{Morris (1997), American Naturalist 150:299-327}
 \note{Although the quantile (qbetabinom)
@@ -56,17 +58,19 @@ the parameters of the per-trial probability distribution.
   set.seed(100)
   n <- 9
   z <- rbetabinom(1000, 0.5, size=n, theta=4)
-  plot(table(z)/length(z),ylim=c(0,0.34),col="gray",lwd=4)
+  par(las=1,bty="l")
+  plot(table(z)/length(z),ylim=c(0,0.34),col="gray",lwd=4,
+       ylab="probability")
   points(0:n,dbinom(0:n,size=n,prob=0.5),col=2,pch=16,type="b")
   points(0:n,dbetabinom(0:n,size=n,theta=4,
-           prob=0.5),col=3,pch=17,type="b")
+           prob=0.5),col=4,pch=17,type="b")
   ## correspondence with SuppDists 
   if (require(SuppDists)) {
-    d1a = dghyper(0:5,a=-5,N=-10,k=5)
-    d1b = dbetabinom(0:5,shape1=5,shape2=5,size=5)
+    d1a <- dghyper(0:5,a=-5,N=-10,k=5)
+    d1b <- dbetabinom(0:5,shape1=5,shape2=5,size=5)
     max(abs(d1a-d1b))
-    p1a = pghyper(0:5,a=-5,N=-10,k=5,lower.tail=TRUE)
-    p1b = cumsum(d1b)
+    p1a <- pghyper(0:5,a=-5,N=-10,k=5,lower.tail=TRUE)
+    p1b <- cumsum(d1b)
     max(abs(p1a-p1b))
   } 
 }

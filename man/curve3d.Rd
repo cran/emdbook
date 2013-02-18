@@ -12,7 +12,7 @@ xlab=varnames[1],
 ylab=varnames[2],
 zlab = NULL, log = NULL, sys3d = c("persp", "wireframe", "rgl",
 "contour", "image", "none"),
-varnames=c("x","y"),...)
+varnames=c("x","y"),use_plyr=NULL,.progress="none",...)
 }
 \arguments{
   \item{expr}{a mathematical expression using \code{x} and \code{y} as
@@ -34,7 +34,10 @@ varnames=c("x","y"),...)
     \code{"rgl"}, \code{"contour"}, \code{"image"},
     or \code{"none"}}
   \item{varnames}{names of variables to substitute}
-  \item{\dots}{additional arguments to the plotting functions}
+  \item{use_plyr}{use methods from the \code{plyr} package?}
+  \item{.progress}{progress bar type (\code{"none"}, \code{"text"},
+    \code{"tk"},\code{"win"}: see \code{\link{create_progress_bar}})}
+    \item{\dots}{additional arguments to the plotting functions}
 }
 \value{
   invisibly, a list of

@@ -83,12 +83,19 @@ dmvnorm <- function (x, mu, Sigma, log = FALSE, tol = 1e-06) {
   }
 
 
+nonint <- function(x) (abs((x) - floor((x)+0.5)) > 1e-7)
+
 dbetabinom <- function(x,prob,size,theta,shape1,shape2,log=FALSE) {
   if (missing(prob) && !missing(shape1) && !missing(shape2)) {
-    prob = shape1/(shape1+shape2)
-    theta = shape1+shape2
+    prob <- shape1/(shape1+shape2)
+    theta <- shape1+shape2
   }
-  v <- lchoose(size,x)-lbeta(theta*(1-prob),theta*prob)+lbeta(size-x+theta*(1-prob),x+theta*prob)
+  v <- lfactorial(size)-lfactorial(x)-lfactorial(size-x)-
+      lbeta(theta*(1-prob),theta*prob)+lbeta(size-x+theta*(1-prob),x+theta*prob)
+  if (any(n <- nonint(x))) {
+      warning("non-integer x detected; returning zero probability")
+      v[n] <- -Inf
+  }
   if (log) v else exp(v)
 }
 

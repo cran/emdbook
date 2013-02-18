@@ -4,90 +4,98 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
-\section{CHANGES IN VERSION 1.3.2.1}{
+\section{Changes in version 1.3.4}{
+  \itemize{
+    \item dbetabinom fix (reported by Christian Robert)
+    \item more CRAN compatibility tweaks (versions 1.3.2 - 1.3.3)
+    \item add 'lims' argument to HPDregionplot
+    \item add plyr dependency, use_plyr option in curve3d
+  }
+}
+\section{Changes in version 1.3.2.1}{
      \itemize{
        \item remove EISPACK=TRUE in dmvnorm
      }
 }
 
-\section{CHANGES IN VERSION 1.3.2}{
+\section{Changes in version 1.3.2}{
      \itemize{
        \item small fix for NAs in lambertW
        \item tweaks to avoid NOTES in CRAN check, cleanup
      }
 }
-\section{CHANGES IN VERSION 1.3.1}{
+\section{Changes in version 1.3.1}{
     \itemize{
       \item asymptotic extension to lambertW (remove possibility of
     vectorized branch specification)
       \item update NEWS to NEWS.Rd
   }}
 
-\section{CHANGES IN VERSION 1.3}{
+\section{Changes in version 1.3}{
     \itemize{
       \item minor bugfixes for HPDregionplot 
       \item tweaks to pass checks on R 2.13
   }}
 
-  \section{CHANGES IN VERSION 1.2.2.1 (24/05/2010)}{
+  \section{Changes in version 1.2.2.1 (24/05/2010)}{
     \itemize{
       \item add @data to calcslice
   }}
   
-  \section{CHANGES IN VERSION 1.2.2 (17/03/2010)}{
+  \section{Changes in version 1.2.2 (17/03/2010)}{
     \itemize{
       \item add (trivial) NAMESPACE
       \item add contour3d
       \item add xlim/ylim arguments to curve3d
   }}
   
-  \section{CHANGES IN VERSION 1.2.1 (11/02/2010)}{
+  \section{Changes in version 1.2.1 (11/02/2010)}{
     \itemize{
       \item remove adapt from install.packages()
       \item add warning about adapt
       \item move CITATION file
   }}
 
-  \section{CHANGES IN VERSION 1.2 (17/08/2009)}{
+  \section{Changes in version 1.2 (17/08/2009)}{
     \itemize{
       \item change is.na() test in lambertW to is.finite()
       \item added ggplot2 to install.packages(), streamline
       \item REMOVED "traceplot" code: nearly identical to xyplot.mcmc etc. in coda package
   }}
 
-  \section{CHANGES IN VERSION 1.1.1.1 (16/10/2008)}{
+  \section{Changes in version 1.1.1.1 (16/10/2008)}{
     \itemize{ 
       \item add firfec0.bug to BUGS
       \item reverse date order of NEWS
   }}
 
-  \section{CHANGES IN VERSION 1.1.1}{
+  \section{Changes in version 1.1.1}{
     \itemize{
       \item tweak to curve3d from Robert Burns
       \item moved ChangeLog to NEWS
       \item added axis.scinot
   }}
 			
-  \section{CHANGES IN VERSION 1.1.0}{
+  \section{Changes in version 1.1.0}{
     \itemize{
       \item argh, another tweak to get.emdbook.packages
       \item tweaked deltavar to be slightly more general
   }}
 
-  \section{CHANGES IN VERSION 1.0.9}{
+  \section{Changes in version 1.0.9}{
     \itemize{
       \item changed "Wrasse" to "Damsel[fish]" throughout (oops)
       \item tweaked get.emdbook.packages (do.call rather than sapply)
       \item tweaked LambertW NA behavior (still not optimal)
 }}
-\section{CHANGES IN VERSION 1.0.8.1}{
+\section{Changes in version 1.0.8.1}{
   \itemize{
     \item ANOTHER big bug in dmvnorm (sigh): spurious factor of n before
     log determinant (should consider removing dmvnorm and just referring
     users to mvtnorm::dmvnorm)
     \item	added cross-ref to mvtnorm::dmvnorm in dmvnorm.Rd
 }}
-\section{CHANGES IN VERSION 1.0.8}{
+\section{Changes in version 1.0.8}{
   \itemize{
     \item fixed major bugs in dmvnorm
     \item added bbmle to get.emdbook.packages
@@ -99,7 +107,7 @@
     \item removed coda dependency
     \item put myxo1.bug into BUGS directory
 }}
-\section{CHANGES IN VERSION 1.0.7}{
+\section{Changes in version 1.0.7}{
   \itemize{
     \item tweaked dbetabinom documentation
     \item fixed (major) bug in get.emdbook.packages
@@ -110,13 +118,13 @@
     }}
 	
 
-    \section{CHANGES IN VERSION 1.0.6}{
+    \section{Changes in version 1.0.6}{
       \itemize{
 	\item internal tweaks
 	\item tiny doc fix for Myxo (sum instead of bsum)
 	}}
 
-	\section{CHANGES IN VERSION 1.0.5}{
+	\section{Changes in version 1.0.5}{
 	  \itemize{
 	    \item removed qcredint (HPDinterval[coda] is better)
 	    \item added calcslice, HPDregionplot, *chibarsq functions
@@ -132,7 +140,7 @@
 	    \item added Lily data (moved from emdbookx)
 	    }}
 
-	    \section{CHANGES IN VERSION 1.0.4}{
+	    \section{Changes in version 1.0.4}{
 	      \itemize{
 		\item added r/dzinbinom (zero-inflated negative binomial) functions
 		\item lseq
@@ -142,7 +150,7 @@
 		\item added credible interval functions, as.mcmc.bugs
 }}
 
-\section{CHANGES IN VERSION 1.0.3}{
+\section{Changes in version 1.0.3}{
   \itemize{
     \item added more data (fir and fish survivorship)
     \item delta-method
@@ -150,7 +158,7 @@
     \item get-packages function
     }}
 
-    \section{CHANGES IN VERSION 1.0.1}{
+    \section{Changes in version 1.0.1}{
       \itemize{
 	\item added Vonesh data
 	\item lambertW function (from bbmisc)

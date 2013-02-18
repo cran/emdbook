@@ -6,13 +6,17 @@
   substitute for \code{outer}
 }
 \usage{
-apply2d(fun, x, y, ...)
+apply2d(fun, x, y, ..., use_plyr = NULL, .progress="none")
 }
 \arguments{
   \item{fun}{a function of two arguments (or a character string such as \code{"*"})}
   \item{x}{first vector}
   \item{y}{second vector}
-  \item{...}{additional arguments to \code{fun}}
+  \item{\dots}{additional arguments to \code{fun}}
+  \item{use_plyr}{use methods from the \code{plyr} package?}
+  \item{.progress}{progress bar type (\code{"none"}, \code{"text"},
+    \code{"tk"},\code{"win"}: see \code{\link{create_progress_bar}})}
+
 }
 \value{
   a matrix of the function applied to the combinations of the vector values
