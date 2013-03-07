@@ -9,7 +9,8 @@
   a bivariate density.
 }
 \usage{
-HPDregionplot(x, vars = 1:2, h, n = 50, lump = TRUE, prob = 0.95, xlab = NULL, ylab = NULL, ...)
+HPDregionplot(x, vars = 1:2, h, n = 50, lump = TRUE, prob = 0.95, xlab =
+NULL, ylab = NULL, lims=NULL, ...)
 }
 \arguments{
   \item{x}{an \code{mcmc} or \code{mcmc.list} object}
@@ -23,6 +24,8 @@ HPDregionplot(x, vars = 1:2, h, n = 50, lump = TRUE, prob = 0.95, xlab = NULL, y
   \item{prob}{probability level}
   \item{xlab}{x axis label}
   \item{ylab}{y axis label}
+  \item{lims}{limits, specified as (x.lower,x.upper,y.lower,y.upper)
+    (passed to \code{kde2d})}
   \item{\dots}{other arguments to \code{\link{contour}}}
 }
 \details{

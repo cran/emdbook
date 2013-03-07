@@ -67,7 +67,7 @@
 ## }
 
 HPDregionplot <- function(x,vars=1:2,h,n=50,lump=TRUE,prob=0.95,
-                          xlab=NULL,ylab=NULL,...) {
+                          xlab=NULL,ylab=NULL,lims=NULL,...) {
   require("MASS") ## for kde2d
   parnames <- if (class(x)=="mcmc.list") colnames(x[[1]]) else colnames(x)
   if (is.character(vars)) {
@@ -85,11 +85,12 @@ HPDregionplot <- function(x,vars=1:2,h,n=50,lump=TRUE,prob=0.95,
     if (lump) var2 <- c(sapply(x,function(z)z[,vars[2]]))
     else var2 <- lapply(x,function(z)z[,vars[2]])
   } else var2 <- x[,vars[2]]
+  if (is.null(lims)) lims <- c(range(var1),range(var2))
   if (!mult) {
-    post1 <- kde2d(var1,var2,n=n,h=h)
+    post1 <- kde2d(var1,var2,n=n,h=h,lims=lims)
     ## post0 = post1
   } else {
-    post1 = mapply(kde2d,var1,var2,MoreArgs=list(n=n,h=h))
+    post1 = mapply(kde2d,var1,var2,MoreArgs=list(n=n,h=h,lims=lims))
   }
   dx <- diff(post1$x[1:2])
   dy <- diff(post1$y[1:2])

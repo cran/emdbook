@@ -14,8 +14,10 @@ deltavar(fun,meanval=NULL,vars,Sigma,verbose=FALSE)
     in raw form (e.g. a*x/(b+x))}
   \item{z}{numeric vector of values}
   \item{var}{variable name}
-  \item{vars}{list of variable names}
-  \item{params}{list or named numeric vector of parameter values to substitute}
+  \item{vars}{list of variable names: needed if \code{params} does not
+    have names, or if some of the values specified in \code{params}
+    should be treated as constant}
+  \item{params}{list or numeric vector of parameter values to substitute}
   \item{meanval}{possibly named vector of mean values of parameters}
   \item{Sigma}{numeric vector of variances or variance-covariance matrix}
   \item{max.order}{maximum order of delta method to compute}
@@ -26,7 +28,8 @@ deltavar(fun,meanval=NULL,vars,Sigma,verbose=FALSE)
   the mean of a function of data; \code{deltavar()} is for estimating
   variances of a function based on the mean values and
   variance-covariance matrix of the parameters.  If \code{Sigma} is a
-  vector, the parameters are assumed to be independently estimated.
+  vector rather than a matrix, the parameters are assumed to be
+  independently estimated.
 }
 \value{
   For \code{deltavar()}, a vector of predicted variances; for

@@ -1,10 +1,17 @@
-apply2d <- function(fun,x,y,...) {
-  if (is.character(fun)) fun <- get(fun)
-  return(matrix(apply(expand.grid(x,y),1,function(z) { fun(z[1],z[2],...)}),
-                nrow=length(x)))
+apply2d <-   function(fun,x,y,...,use_plyr=NULL,.progress="none") {
+    if (is.null(use_plyr)) use_plyr <- require(plyr)
+    if (is.character(fun)) fun <- get(fun)
+    if (!use_plyr) {
+        a <- apply(expand.grid(x,y),1,function(z) { fun(z[1],z[2],...)})
+    } else {
+        a <- aaply(as.matrix(expand.grid(x,y)),1,
+                   function(z) {fun(z[1],z[2],...)},
+                   .progress=.progress)
+    }
+    return(matrix(a,nrow=length(x)))
 }
 
-## TO DO: log scales
+## FIXME: think about the meaning of ... more carefully
 curve3d <- function (expr, from=c(0,0), to=c(1,1),
                      n = c(41,41),
                      xlim, ylim, add = FALSE, 
@@ -14,6 +21,8 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1),
                      sys3d = c("persp","wireframe","rgl","contour","image",
                        "none"),
                      varnames = c("x","y"),
+                     use_plyr=NULL,
+                     .progress="none",
                      ...) 
 {
     vars <- lapply(as.list(varnames),parse,file="",n=NULL)
@@ -64,7 +73,7 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1),
         ## SKIP the inside of curve3d, go back one more level ...
         eval(expr, envir = env, enclos = parent.frame(2))
     }
-    z <- apply2d(tmpfun,x,y)
+    z <- apply2d(tmpfun,x,y,use_plyr=use_plyr,.progress=.progress)
     switch(sys3d,
            persp=persp(x,y,z,xlab=xlab,ylab=ylab,zlab=zlab,...),
            contour=contour(x,y,z,xlab=xlab,ylab=ylab,add=add,...),

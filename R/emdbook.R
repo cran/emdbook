@@ -31,26 +31,28 @@ deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE) {
     vars <- names(meanval)
   }
   derivs <- try(lapply(vars,D,expr=expr),silent=TRUE)
+  symbderivs <- TRUE
   if (inherits(derivs,"try-error")) {
-    if (length(grep("is not in the derivatives table",derivs))) {
-      ## take numeric derivative
-      nderivs <- with(as.list(meanval),
-                      numericDeriv(expr[[1]],theta=vars))
-      nderivs <- attr(nderivs,"gradient")
-    } else {
-      stop(paste("Error within derivs:",derivs))
-    }
+      if (length(grep("is not in the derivatives table",derivs))) {
+          ## take numeric derivative
+          symbderivs <- FALSE
+          warning("some symbols not in derivative table, using numeric derivatives")
+          nderivs <- with(as.list(meanval),
+                         numericDeriv(expr[[1]],theta=vars))
+          nderivs <- attr(nderivs,"gradient")
+      } else {
+          stop(paste("Error within derivs:",derivs))
+      }
   } else {
-    if (verbose) {
-      cat("derivs:\n")
-      print(derivs)
-    }
-    nderivs <- sapply(derivs,eval,envir=as.list(meanval))
-    if (verbose) {
-      cat("numeric derivs:\n")
+      nderivs <- sapply(derivs,eval,envir=as.list(meanval))
+  }
+  if (verbose) {
+      if (symbderivs) {
+          cat("symbolic derivs:\n")
+          print(derivs)
+      }
+      cat("value of derivs:\n")
       print(nderivs)
-      cat("\n")
-    }
   }
   if (!is.matrix(Sigma) && length(Sigma)>1) Sigma <- diag(Sigma)
   ## if (!is.matrix(Sigma)) sum(Sigma*nderivs^2) else
