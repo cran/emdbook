@@ -127,7 +127,6 @@ axis.scinot <- function(side,at) {
 
 ## convert R2WinBUGS output to coda/mcmc
 as.mcmc.bugs <- function(x) {
-  if (!require("coda")) stop("coda is required to use as.mcmc.bugs")
   if (x$n.chains>1) {
     z <- list()
     for (i in 1:x$n.chains) {
@@ -205,14 +204,10 @@ ncredint <- function(pvec,npost,level=0.95,tol=0.01,verbose=FALSE) {
 calcslice <- function(fit1,fit2,fn=fit1@minuslogl,
                       range=c(-0.1,1.1),
                       n=400) {
-  ## require(bbmle) 
   slicep = seq(range[1],range[2],length=n)
-  if (!require(bbmle)) {
-    stop("need to install bbmle in order to use calcslice")
-  }
   slicepars = t(sapply(slicep,function(x) (1-x)*coef(fit1)+x*coef(fit2)))
   ## FIXME: warning about parnames from R CMD check
-  if (is.null(bbmle::parnames(fn))) {
+  if (is.null(parnames(fn))) {
     dd <- fit1@data
     ff <- names(formals(fn))
     if (!("..." %in% ff)) {

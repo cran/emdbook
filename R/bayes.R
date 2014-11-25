@@ -68,7 +68,6 @@
 
 HPDregionplot <- function(x,vars=1:2,h,n=50,lump=TRUE,prob=0.95,
                           xlab=NULL,ylab=NULL,lims=NULL,...) {
-  require("MASS") ## for kde2d
   parnames <- if (class(x)=="mcmc.list") colnames(x[[1]]) else colnames(x)
   if (is.character(vars)) {
     vars <- match(vars,parnames)

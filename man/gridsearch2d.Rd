@@ -8,7 +8,9 @@
   parts of the surface.
 }
 \usage{
-gridsearch2d(fun, v1min, v2min, v1max, v2max, n1 = 20, n2 = 20, logz = FALSE, sys3d = c("both", "contour", "image"), ...)
+gridsearch2d(fun, v1min, v2min, v1max, v2max,
+n1 = 20, n2 = 20, logz = FALSE,
+sys3d = c("both", "contour", "image"), ...)
 }
 \arguments{
   \item{fun}{Objective function to be minimized: function of two arguments}

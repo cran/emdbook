@@ -1,5 +1,4 @@
-apply2d <-   function(fun,x,y,...,use_plyr=NULL,.progress="none") {
-    if (is.null(use_plyr)) use_plyr <- require(plyr)
+apply2d <-   function(fun,x,y,...,use_plyr=TRUE,.progress="none") {
     if (is.character(fun)) fun <- get(fun)
     if (!use_plyr) {
         a <- apply(expand.grid(x,y),1,function(z) { fun(z[1],z[2],...)})
@@ -21,7 +20,7 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1),
                      sys3d = c("persp","wireframe","rgl","contour","image",
                        "none"),
                      varnames = c("x","y"),
-                     use_plyr=NULL,
+                     use_plyr=TRUE,
                      .progress="none",
                      ...) 
 {
@@ -79,12 +78,11 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1),
            contour=contour(x,y,z,xlab=xlab,ylab=ylab,add=add,...),
            image=image(x,y,z,xlab=xlab,ylab=ylab,...),
            none=NA,
-           wireframe={require("lattice");
-                      ## browser()
-                      print(wireframe(z,row.values=x,col.values=y,...))},
-           rgl={require("rgl"); rgl::persp3d(x,y,z,
-                                             xlab=xlab,
-                                             ylab=ylab,zlab=zlab,add=add,...)})
+           wireframe={
+               print(wireframe(z,row.values=x,col.values=y,...))},
+           rgl={persp3d(x,y,z,
+                        xlab=xlab,
+                        ylab=ylab,zlab=zlab,add=add,...)})
   invisible(list(x=x,y=y,z=z))
 }
 
@@ -201,7 +199,6 @@ metropSB <- function(fn,start,deltap=NULL,
 }
 
 contour3d <- function(x,y,z,contourArgs=NULL,...) {
-  require(rgl)
   if (is.list(x)) {
     if (!all(sort(names(x))==c("x","y","z")))
       stop("list should contain components 'x', 'y', 'z'")

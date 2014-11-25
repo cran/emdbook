@@ -6,7 +6,7 @@
   substitute for \code{outer}
 }
 \usage{
-apply2d(fun, x, y, ..., use_plyr = NULL, .progress="none")
+apply2d(fun, x, y, ..., use_plyr = TRUE, .progress="none")
 }
 \arguments{
   \item{fun}{a function of two arguments (or a character string such as \code{"*"})}

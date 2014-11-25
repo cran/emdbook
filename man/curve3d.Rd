@@ -12,7 +12,7 @@ xlab=varnames[1],
 ylab=varnames[2],
 zlab = NULL, log = NULL, sys3d = c("persp", "wireframe", "rgl",
 "contour", "image", "none"),
-varnames=c("x","y"),use_plyr=NULL,.progress="none",...)
+varnames=c("x","y"),use_plyr=TRUE,.progress="none",...)
 }
 \arguments{
   \item{expr}{a mathematical expression using \code{x} and \code{y} as
