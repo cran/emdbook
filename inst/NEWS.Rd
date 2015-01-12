@@ -4,6 +4,11 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
+\section{Changes in version 1.3.7}{
+   \itemize{
+     \item CRAN compatibility tweaks
+   }
+}
 \section{Changes in version 1.3.5}{
   \itemize{
     \item CRAN compatibility tweaks
