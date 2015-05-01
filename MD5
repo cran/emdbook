@@ -1,4 +1,4 @@
-23f61b14cd80819ad31d6577c72b9a2b *DESCRIPTION
+2353d4bace4c1e12a87e378c1bedeb90 *DESCRIPTION
 ad7151bfc5fc5548420f8a60afcf1564 *NAMESPACE
 32a24a3b5f0a82939418922c8d53a645 *NEWS
 d92224835833fef130226183c1b53f4d *R/bayes.R
@@ -34,10 +34,11 @@ c2186b209ab74f924a7f9f9853e49be3 *inst/BUGS/statespace.bug
 39930b1f16d993d66cf0a04f81259ca7 *inst/BUGS/testmyxo.bug
 1ec042fb51e028e2052fa524fad39ea0 *inst/BUGS/trees.bug
 69aa99f614c7d4cf08896de489792fee *inst/CITATION
-0e149a2ebef3745b5748e95a38af5d91 *inst/NEWS.Rd
+74e3da7b975cbe20d08fad8d68791085 *inst/NEWS.Rd
 697732b3d8c8dcd7e1b6d27d57895794 *inst/misc/firfec-batch.R
-f1f3970af2a6c30fc6d88943d4cbc0a6 *man/Damsel.Rd
+50e7f0aefdb59907e77b490d460a55e7 *man/Damsel.Rd
 b38e342000a8dcb43f7f09355dde2e7e *man/Fir.Rd
+f6533e5f54e57cc2920144b4d03bb254 *man/GobySurvival.Rd
 f4968c4390bfefe8b4cc5b604c05c397 *man/HPDregionplot.Rd
 6320252b80c4f105da4693ef6d1ad2bf *man/Lily.Rd
 badd9cca34605e122d2e718bf57815c8 *man/Myxo.Rd

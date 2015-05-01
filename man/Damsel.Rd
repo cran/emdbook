@@ -10,7 +10,7 @@
 (three-spot damselfish), one on the distribution of settlement densities
   to empty anemones across time and space, the other on survival
 (recruitment) of arriving settlers as a function of experimentally manipulated densities
-  from Schmitt et al. (1999)
+  from Schmitt et al. (1999).
 }
 \usage{data(DamselSettlement)
 data(DamselRecruitment)
@@ -34,9 +34,9 @@ data(DamselRecruitment_sum)
 }
 \source{
   Schmitt et al. (1999), "Quantifying the effects of multiple processes
-  on local abundance", Ecology Letters 2:294-303.  (Original data kindly provided
-  by Schmitt and Holbrook.).
-You can also find versions of these data
-at \url{http://mcr.lternet.edu/data/dataset.php}.
+  on local abundance", Ecology Letters 2:294-303. DOI: 10.1046/j.1461-0248.1999.00086.x (Original data kindly provided
+  by Schmitt and Holbrook.)
+  The original version of this data set is available
+  from the \href{http://mcr.lternet.edu/cgi-bin/showDataset.cgi?docid=knb-lter-mcr.2}{Moorea Coral Reef LTER data repository}.
 }
 \keyword{datasets}

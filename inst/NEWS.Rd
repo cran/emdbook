@@ -4,6 +4,13 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
+\section{Changes in version 1.3.8}{
+   \itemize{
+     \item CRAN compatibility tweaks; add link to goby data; update link
+   to damselfish data
+   }
+}
+
 \section{Changes in version 1.3.7}{
    \itemize{
      \item CRAN compatibility tweaks
