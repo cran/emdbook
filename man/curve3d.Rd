@@ -45,6 +45,10 @@ varnames=c("x","y"),use_plyr=TRUE,.progress="none",...)
   \item{y}{y values}
   \item{z}{z matrix}
 }
+\note{
+  You must explicitly install the \code{rgl} package
+  (via \code{install.packages("rgl")}) before using \code{sys3d="persp"}.
+}
 \author{Ben Bolker}
 \seealso{\code{\link{outer}}, \code{\link{curve}}}
 \examples{

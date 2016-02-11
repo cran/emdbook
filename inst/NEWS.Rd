@@ -4,6 +4,15 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
+\section{Changes in version 1.3.9}{
+  \itemize{
+    \item add imports for R CMD check
+    \item add labels to curve3d with wireframe plot
+    \item change rgl from Depends: to Suggests: (helps MacOS users when
+   rgl installation is troublesome)
+   }
+}
+
 \section{Changes in version 1.3.8}{
    \itemize{
      \item CRAN compatibility tweaks; add link to goby data; update link

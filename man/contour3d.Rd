@@ -22,6 +22,8 @@ contour3d(x, y, z, contourArgs=NULL, ...)
   Returns a list of contour lines (as in \code{\link{contourLines}}),
   invisibly.
 }
+\note{You have to install the \code{rgl} package before you
+  can use this function.}
 \author{
   Ben Bolker
 }

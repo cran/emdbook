@@ -1,3 +1,7 @@
+is_installed <- function(pkg) {
+    pkg %in% installed.packages()[,"Package"]
+}
+
 apply2d <-   function(fun,x,y,...,use_plyr=TRUE,.progress="none") {
     if (is.character(fun)) fun <- get(fun)
     if (!use_plyr) {
@@ -79,8 +83,13 @@ curve3d <- function (expr, from=c(0,0), to=c(1,1),
            image=image(x,y,z,xlab=xlab,ylab=ylab,...),
            none=NA,
            wireframe={
-               print(wireframe(z,row.values=x,col.values=y,...))},
-           rgl={persp3d(x,y,z,
+               print(wireframe(z,row.values=x,col.values=y,
+                               xlab=xlab,ylab=ylab,zlab=zlab,...))},
+           rgl={
+              if (!is_installed("rgl")) {
+                  stop("please install the rgl package first ...")
+              } 
+              rgl::persp3d(x,y,z,
                         xlab=xlab,
                         ylab=ylab,zlab=zlab,add=add,...)})
   invisible(list(x=x,y=y,z=z))
@@ -199,6 +208,9 @@ metropSB <- function(fn,start,deltap=NULL,
 }
 
 contour3d <- function(x,y,z,contourArgs=NULL,...) {
+    if (!is_installed("rgl")) {
+        stop("must install the rgl package to use contour3d")
+    }
   if (is.list(x)) {
     if (!all(sort(names(x))==c("x","y","z")))
       stop("list should contain components 'x', 'y', 'z'")
@@ -209,6 +221,6 @@ contour3d <- function(x,y,z,contourArgs=NULL,...) {
   ccc = do.call(contourLines,c(list(x,y,z),contourArgs))
   ccc = lapply(ccc, function(x) {
     list(x=x$x,y=x$y,z=rep(x$level,length(x$x))) })
-  invisible(mapply(lines3d,ccc,MoreArgs=list(...)))
+  invisible(mapply(rgl::lines3d,ccc,MoreArgs=list(...)))
   invisible(ccc)
 }
