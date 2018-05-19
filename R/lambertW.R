@@ -69,7 +69,7 @@ lambertW_base <- function(z,b=0,maxiter=10,eps=.Machine$double.eps,min.imag=1e-9
   }
   if (n==maxiter) warning(paste("iteration limit (",maxiter,
         ") reached, result of W may be inaccurate",sep=""))
-  if (all(Im(w[!is.na(w)])<min.imag)) w = as.numeric(w)
+  if (all(abs(Im(w[!is.na(w)]))<min.imag)) w <- as.numeric(w)
   if (sum(badz)>0) {
     w.new <- rep(NA_real_,length(z.old))
     w.new[!badz] <- w
