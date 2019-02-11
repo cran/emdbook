@@ -4,6 +4,13 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
+\section{Changes in version 1.3.11}{
+  \itemize{
+    \item remove R2WinBUGS support per CRAN request
+    \item fix typo in dbetabinom help page
+    \item dmvnorm slightly more robust
+}
+}
 \section{Changes in version 1.3.10 (2018-05-18)}{
   \itemize{
     \item update package help page

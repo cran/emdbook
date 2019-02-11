@@ -4,7 +4,7 @@ get.emdbook.packages <- function() {
      "bbmle","chron",
      "coda","ellipse","ggplot2",
      "gplots","gtools","gdata",
-     "MCMCpack","deSolve","plotrix","R2WinBUGS","reshape","rgl",
+     "MCMCpack","deSolve","plotrix","reshape","rgl",
      "scatterplot3d")
    inst.pkgs = rownames(installed.packages())
    newpkgs <- pkglist[!pkglist %in% inst.pkgs]
@@ -21,7 +21,9 @@ get.emdbook.packages <- function() {
 ## meanval: values of the mean (possibly named)
 ## vars: names
 ## Sigma: var-cov function
-deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE) {
+deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE
+                     ##, symbderivs=NULL
+                     ) {
   expr <- as.expression(substitute(fun))
   nvals <- length(eval(expr,envir=as.list(meanval)))
   vecexp <- nvals>1 ## is the result a vector?
@@ -30,8 +32,9 @@ deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE) {
       stop("must specify either variable names or named values for means")
     vars <- names(meanval)
   }
+  ## STOPPED HERE
   derivs <- try(lapply(vars,D,expr=expr),silent=TRUE)
-  symbderivs <- TRUE
+  ## symbderivs <- TRUE
   if (inherits(derivs,"try-error")) {
       if (length(grep("is not in the derivatives table",derivs))) {
           ## take numeric derivative
@@ -47,10 +50,11 @@ deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE) {
       nderivs <- sapply(derivs,eval,envir=as.list(meanval))
   }
   if (verbose) {
-      if (symbderivs) {
-          cat("symbolic derivs:\n")
-          print(derivs)
-      }
+      ## if (symbderivs) {
+      ##     stop("symbolic derivs not yet implemented\n")
+      ##     cat("symbolic derivs:\n")
+      ##     print(derivs)
+      ## }
       cat("value of derivs:\n")
       print(nderivs)
   }

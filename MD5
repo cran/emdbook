@@ -1,12 +1,12 @@
-6a3873f295ae5d08a15ad4baa79f63bf *DESCRIPTION
-663446585e6e669b50d06c716b94fa3a *NAMESPACE
+67951e5d1805f8939c5ceecd9e819001 *DESCRIPTION
+888913a54f3881f31c9e8b1474b50c8c *NAMESPACE
 d92224835833fef130226183c1b53f4d *R/bayes.R
-fcd8bb37cd8557772e7169fec824af6c *R/dists.R
-318f8cc8bd453b8e6c0f44be19446ee6 *R/emdbook.R
+93db929825873d2cad04781145d9c5b8 *R/dists.R
+65a0d81c9ce2ca72abab6a79ad6f156c *R/emdbook.R
 549c69ac53d6e6c9b1ef4da2d1c2f291 *R/lambertW.R
 9ea5cda9c2906970dc67503379409c17 *R/utils3d.R
 115c6bad0c12846cdfc69911de416ed0 *TODO
-f24a373ca98d14bb7dc9af44b4365994 *build/partial.rdb
+5bfab369e5ab9e1c43174a306b45e8a8 *build/partial.rdb
 94296150eb8f47d89768e6ab41aa922f *data/DamselRecruitment.tab.gz
 1bbec908bfd6c1347f92365adf3b9df1 *data/DamselRecruitment_sum.tab.gz
 1fc635e815003c68d2435c7962ff3ab6 *data/DamselSettlement.tab.gz
@@ -36,8 +36,9 @@ c2186b209ab74f924a7f9f9853e49be3 *inst/BUGS/statespace.bug
 39930b1f16d993d66cf0a04f81259ca7 *inst/BUGS/testmyxo.bug
 1ec042fb51e028e2052fa524fad39ea0 *inst/BUGS/trees.bug
 69aa99f614c7d4cf08896de489792fee *inst/CITATION
-09314b4b2cbcb2191577fc513aa21cb8 *inst/NEWS.Rd
-697732b3d8c8dcd7e1b6d27d57895794 *inst/misc/firfec-batch.R
+43b808f4672be9cde7d7bf4ffba6e634 *inst/NEWS.Rd
+d6fdbfc3b04b31de265ba39f5a92ada8 *inst/misc/firfec-batch.R
+30b921e0ae74cc7c66a3d0187af26eb9 *inst/misc/firfec-batch.Rout
 50e7f0aefdb59907e77b490d460a55e7 *man/Damsel.Rd
 b38e342000a8dcb43f7f09355dde2e7e *man/Fir.Rd
 6bccb8798857ce2ad42e8374032c6af2 *man/GobySurvival.Rd
@@ -52,7 +53,7 @@ fae48299e619e2f5bbc46c9e89bb24c6 *man/Reedfrog.Rd
 8a90144d48fec18acebb26307594ea7d *man/contour3d.Rd
 ef36cb4bb75fff60aae06dc73e6893de *man/credint.Rd
 5e13fc121a4cefd5447998a614a00593 *man/curve3d.Rd
-68bd32cf52b118eedd4207259c9afff6 *man/dbetabinom.Rd
+402794216fe7f3d1c69d46d6312ca6c4 *man/dbetabinom.Rd
 087c8245d6108e4a23756a24240611e6 *man/dchibarsq.Rd
 fdbd20aa484f4aa1ea1e60bbf66886a9 *man/deltamethod.Rd
 5a0ba7fde2993d066b39a5b13ed05ce5 *man/deprecated.Rd
@@ -68,3 +69,4 @@ ab61924f8f4952fb44ff39cdb77be103 *man/metropSB.Rd
 636fc4d0896b38bfc1e487520d63f91a *man/perturb.params.Rd
 9d465c7bc4b736f1c134f9163d08df3f *man/scinot.Rd
 c2f97d0ba64dc7472683c87e38110ea8 *man/trcoef.Rd
+0f3aa388300d167f5a274da4ba581032 *tests/testthat/test-deltavar.R

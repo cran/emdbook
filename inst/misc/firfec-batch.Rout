@@ -1,0 +1,81 @@
+
+R Under development (unstable) (2019-01-08 r75959) -- "Unsuffered Consequences"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(emdbook)
+> library(R2jags)
+Loading required package: rjags
+Loading required package: coda
+Linked to JAGS 4.3.0
+Loaded modules: basemod,bugs
+
+Attaching package: ‘R2jags’
+
+The following object is masked from ‘package:coda’:
+
+    traceplot
+
+> library(coda)
+> 
+> data(FirDBHFec_sum)
+> X <- na.omit(FirDBHFec_sum[,c("fecundity","DBH","pop")])
+> X$fecundity = round(X$fecundity)
+> ##
+> DBH <- X$DBH
+> cones <- X$fecundity
+> n <- length(DBH)
+> inits <- list(list(a=0,b=0,k=1),list(a=2,b=-2,k=1),
++               list(a=-2,b=2,k=1))
+> bf <- function(x) system.file("BUGS",x,package="emdbook")
+> firfec0.bugs <- jags(data=list("DBH","cones","n"),
++                      inits,parameters.to.save=c("a","b","k"),
++                      model.file=bf("firfec0.bug"),
++                      n.chains=length(inits),n.iter=9000)
+module glm loaded
+Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 311
+   Unobserved stochastic nodes: 314
+   Total graph size: 1345
+
+Initializing model
+
+> inits <- list(list(a=c(0,0),b=c(0,0),k=1),
++               list(a=c(2,0),b=c(-2,0),k=1),
++               list(a=c(0,2),b=c(0,-2),k=1))
+> grp <- as.numeric(X$WAVE_NON)
+> firfec1.bugs <- jags(data=list("DBH","cones","n","grp"),
++                        inits,parameters.to.save=c("a","b","k"),
++                        model.file=bf("firfec1.bug"),
++                        n.chains=length(inits),n.iter=6000)
+Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Deleting model
+
+Error in jags.model(model.file, data = data, inits = init.values, n.chains = n.chains,  : 
+  RUNTIME ERROR:
+Compilation error on line 3.
+Unknown variable grp
+Either supply values for this variable with the data
+or define it  on the left hand side of a relation.
+
+Calls: jags -> jags.model
+Execution halted
