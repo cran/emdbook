@@ -4,6 +4,11 @@
 \title{emdbook News}
 \encoding{UTF-8}
 
+\section{Changes in version 1.3.12}{
+\itemize{
+\item documentation/CRAN-compatibility update
+}
+}
 \section{Changes in version 1.3.11}{
   \itemize{
     \item remove R2WinBUGS support per CRAN request
