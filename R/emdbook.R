@@ -36,12 +36,18 @@ deltavar <- function(fun,meanval=NULL,vars,Sigma,verbose=FALSE
   derivs <- try(lapply(vars,D,expr=expr),silent=TRUE)
   ## symbderivs <- TRUE
   if (inherits(derivs,"try-error")) {
-      if (length(grep("is not in the derivatives table",derivs))) {
+      w <- NULL
+      if (!Sys.getenv("LANGUAGE") %in% c("", "en")) {
+          w <- "error (symbols not in derivative table?): using numeric derivatives"
+      } else if (any(grepl("derivatives table", derivs))) {
+          w <- "some symbols not in derivative table, using numeric derivatives"
+      }
+      if (!is.null(w)) {
           ## take numeric derivative
           symbderivs <- FALSE
-          warning("some symbols not in derivative table, using numeric derivatives")
+          warning(w)
           nderivs <- with(as.list(meanval),
-                         numericDeriv(expr[[1]],theta=vars))
+                          numericDeriv(expr[[1]],theta=vars))
           nderivs <- attr(nderivs,"gradient")
       } else {
           stop(paste("Error within derivs:",derivs))
@@ -89,7 +95,7 @@ deltamethod <- function(fun,z,var="x",params=NULL,max.order=2) {
   gvals <- gamma(c(1,3:(max.order+1)))
   deltavals <- cumsum(c(1,mvals)*c(evals[-(2)])/gvals)
   results <- c(r0,deltavals)
-  names(results) = c("delta","E(f(x))",paste("delta",2:max.order,sep=""))
+  names(results) = c("E(f(x)) [true]","f(E(x)) [naive]",paste("delta",2:max.order,sep=""))
   results
 }
 
